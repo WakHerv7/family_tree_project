@@ -1,0 +1,72 @@
+
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Family List{% endblock %}
+
+{% block css_styles %}
+<link rel="stylesheet" href="{% static '/css/family_tree/style.css' %}">
+<link rel="stylesheet" href="{% static '/css/family_tree/style_new_member.css' %}">
+{% endblock %}
+
+{% block content %}
+<br>
+<h1>Family List</h1>
+<div class="btn_container mt-4">
+    <a href="/new_fm" id="ajoutConjointBtn" class="outline_btn_primary_wh">+ Ajouter un membre</a>
+</div>
+<br>
+<table class="table-striped table-bordered">
+    <thead>
+        <th>Id</th>
+        <th>Nom</th>
+        <th>Sexe</th>
+        <th>En vie</th>
+        <th>Pere </th>        
+        <th>Mere</th>        
+        <th>Conjoint(s)</th> 
+        <th>Generation</th>
+        <th></th>  
+    </thead>
+    {% if len_family > 0 %}
+    <tbody>       
+        {% for item in family %}
+        <tr>
+            <td>{{item.id}}</td>
+            <td><a href="{% url 'showItem' item.id %}" class="">{{item.name}}</a></td>
+            <td>{{item.gender}}</td>
+            <td>{{item.alive}}</td>
+            <td>{{item.father}}</td>
+            <td>{{item.mother}}</td>
+            <td>{{item.spouses}}</td>
+            <td>{{item.generation}}</td>
+            <td>
+                <a href="{% url 'updateItem' item.id %}" class="btn btn-primary">Modifier</a>
+                <a href="#" onclick="openDeleteModal(event,'{{item.id}}', '{{item.name}}')" class="btn btn-danger">Supprimer</a>
+                <!-- <a href="{% url 'deleteItem' item.id %}" class="btn btn-danger">Supprimer</a> -->
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    {% else %}
+    <span>No income</span>
+    {% endif %}
+</table>
+<br>
+<div id="modal_container" class="modal_container displayNone">
+    <div class="modal_content">
+        <div>
+            Etes-vous sûr de vouloir supprimer <strong id="fmName">Mon nom</strong> de la famille ?
+        </div>
+        <div class="btn_container mt-4">
+            <a href="#" id="delete_fm_btn" class="btn btn-light mr-2">Oui</a>
+            <a href="#" onclick="closeDeleteModal(event)" id="modal_closer_btn" class="btn btn-danger">Non, je ne veux pas</a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block js_scripts %}
+    <script src="{% static 'js/family_list/app.js' %}" defer></script>
+{% endblock %}

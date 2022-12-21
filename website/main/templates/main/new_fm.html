@@ -1,0 +1,302 @@
+
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Nouveau membre de famille{% endblock %}
+
+{% block css_styles %}
+<link rel="stylesheet" href="{% static '/css/family_tree/style_new_member.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="super_container_wh">
+    <div class="back_button_container">
+        <a class="back_button" href="/family_list">Retour</a>
+    </div>
+    <div class="form_container_wh mb-5">
+        <h2 id="form_title">Nouveau membre de famille</h2>
+        <form class="mb-5" action="" method="POST">
+            {% csrf_token %}
+            <div class="form_section">
+                <div class="form_section_title">
+                    <span class="">Moi</span>
+                </div>                
+                
+                <div class="form_radio_container">
+                    <div class="radio_group_title">Sexe : </div>
+                    <label class="radio_item_container">                        
+                        <input type="radio" value="m" checked="checked" name="radio_gender_moi">
+                        <span class="checkmark"></span>
+                        <span>Homme</span>
+                    </label>
+                    <label class="radio_item_container">                        
+                        <input type="radio" value="f" name="radio_gender_moi">
+                        <span class="checkmark"></span>
+                        <span>Femme</span>
+                    </label>
+                </div>                
+                <div class="form_radio_container">
+                    <div class="radio_group_title">Statut : </div>
+                    <label class="radio_item_container">                        
+                        <input type="radio" value="vie" checked="checked" name="radio_status_moi">
+                        <span class="checkmark"></span>
+                        <span>En vie</span>
+                    </label>
+                    <label class="radio_item_container">                        
+                        <input type="radio" value="mort" name="radio_status_moi">
+                        <span class="checkmark"></span>
+                        <span>Mort(e)</span>
+                    </label>
+                    <label class="radio_item_container">                        
+                        <input type="radio" value="mba"name="radio_status_moi">
+                        <span class="checkmark"></span>
+                        <span>Mort(e) à bas âge</span>
+                    </label>
+                </div>
+                <div class="form_input_container">
+                    <input type="text" name="my_name" id="my_name" placeholder="Mon nom complet ...">
+                </div>
+            </div>
+
+
+            <div class="form_section">
+                <div class="form_section_title">
+                    <span class="">Mes parents</span>
+                    <label class="checkbox_item_container">
+                        <input type="checkbox" id="noParentCheck"checked="checked">
+                        <span class="checkbox_checkmark"></span>
+                        <span>Aucun</span>
+                    </label>
+                </div> 
+                <div class="composed-checkbox-container">
+                    <input id="checkbox-mother" class="checkbox-custom" name="checkbox-mother" type="checkbox">
+                    <label for="checkbox-mother" class="checkbox_item_container">                        
+                        <span class="checkbox_checkmark pt-2"></span>
+                    </label>
+                    <div>
+                        <label for="checkbox-mother" class="sub_title">Ma maman</label>
+                        <input type="hidden" value="f" checked="checked" name="radio_sexe_mother">
+                        <div class="form_radio_container">
+                            <div class="radio_group_title">Statut : </div>
+                            <label class="radio_item_container">                        
+                                <input type="radio" value="vie" checked="checked" name="radio_status_mother">
+                                <span class="checkmark"></span>
+                                <span>En vie</span>
+                            </label>
+                            <label class="radio_item_container">                        
+                                <input type="radio" value="mort"  name="radio_status_mother">
+                                <span class="checkmark"></span>
+                                <span>Morte</span>
+                            </label>
+                        </div>
+                        
+                        <i class="indication-note"><small>(Sélectionnez son nom dans la liste déroulante OU cliquez sur "Ajouter un nom" si son nom n'est pas dans la liste)</small></i>                        
+                        <div class="form_input_container">
+                            <select id="parent_female_select">
+                                <option value="0">Guemthueng Marie</option>
+                                <option value="1">KENMEUGNE Chantal</option>                                
+                            </select>
+                            <input type="hidden" name="my_name" id="new_parent_female_input" placeholder="Nom de ma maman ...">                            
+                            <label class="new_income_category" for="new_parent_female_check">
+                                <input type="checkbox" name="" id="new_parent_female_check">
+                                <span id="new_parent_female_span">+ Ajouter un nom</span>            
+                            </label>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="composed-checkbox-container">
+                    <input id="checkbox-father" class="checkbox-custom" name="checkbox-father" type="checkbox">
+                    <label for="checkbox-father" class="checkbox_item_container">                        
+                        <span class="checkbox_checkmark pt-2"></span>
+                    </label>
+                    <div>
+                        <label for="checkbox-father" class="sub_title">Mon papa</label>
+                        <input type="hidden" value="m" checked="checked" name="radio_sexe_father">
+                        <div class="form_radio_container">
+                            <div class="radio_group_title">Statut : </div>
+                            <label class="radio_item_container">                        
+                                <input type="radio" value="vie" checked="checked" name="radio_status_father">
+                                <span class="checkmark"></span>
+                                <span>En vie</span>
+                            </label>
+                            <label class="radio_item_container">                        
+                                <input type="radio" value="mort" name="radio_status_father">
+                                <span class="checkmark"></span>
+                                <span>Mort</span>
+                            </label>
+                        </div>
+                        <i class="indication-note"><small>(Sélectionnez son nom dans la liste déroulante OU cliquez sur "Ajouter un nom" si son nom n'est pas dans la liste)</small></i>                   
+                        <div class="form_input_container">
+                            <select id="parent_male_select">
+                                <option value="0">Teku WAKAM Jean Marie</option>
+                                <option value="1">TADJUIDJE KAMDEM Fidele</option>                                
+                            </select>
+                            <input type="hidden" name="my_name" id="new_parent_male_input" placeholder="Nom de mon papa ...">                            
+                            <label class="new_income_category" for="new_parent_male_check">
+                                <input type="checkbox" name="" id="new_parent_male_check">
+                                <span id="new_parent_female_span">+ Ajouter un nom</span>            
+                            </label>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            
+
+            <div class="form_section">
+                <div class="form_section_title">
+                    <span class="">Mon/Mes conjoint(s)</span>
+                </div> 
+                <div class="all_conjoints" id="all_conjoints">
+                    <!-- <div class="composed-checkbox-container"> 
+                        <span class="mini_close"></span>
+                        <div>
+                            <div class="mini_header">
+                                <span for="checkbox-mother" class="sub_title">Conjoint 1</span>
+                                
+                            </div>
+                            <div class="form_radio_container">
+                                <div class="radio_group_title">Sexe : </div>
+                                <label class="radio_item_container">                        
+                                    <input type="radio" checked="checked" name="radio-sexe-conjoint1">
+                                    <span class="checkmark"></span>
+                                    <span>Homme</span>
+                                </label>
+                                <label class="radio_item_container">                        
+                                    <input type="radio" name="radio-sexe-conjoint1">
+                                    <span class="checkmark"></span>
+                                    <span>Femme</span>
+                                </label>
+                            </div>
+                            <div class="form_radio_container">
+                                <div class="radio_group_title">Statut : </div>
+                                <label class="radio_item_container">                        
+                                    <input type="radio" checked="checked" name="radio-statut-conjoint1">
+                                    <span class="checkmark"></span>
+                                    <span>En vie</span>
+                                </label>
+                                <label class="radio_item_container">                        
+                                    <input type="radio" name="radio-statut-conjoint1">
+                                    <span class="checkmark"></span>
+                                    <span>Morte</span>
+                                </label>
+                            </div>
+                            <i class="indication-note"><small>(Sélectionnez son nom dans la liste déroulante OU cliquez sur "Ajouter un nom" si son nom n'est pas dans la liste)</small></i>                        
+                            <div class="form_input_container">
+                                <select id="parent_female_select">
+                                    <option value="0">Guemthueng Marie</option>
+                                    <option value="1">KENMEUGNE Chantal</option>                                
+                                </select>
+                                <input type="hidden" name="my_name" id="new_parent_female_input" placeholder="Nom de ma maman ...">                            
+                                <label class="new_income_category" for="new_parent_female_check">
+                                    <input type="checkbox" name="" id="new_parent_female_check">
+                                    <span id="new_parent_female_span">+ Ajouter un nom</span>            
+                                </label>
+                            </div>
+                            
+                            
+                        </div>
+                    </div> -->
+                </div>
+                
+
+                <div class="btn_container">
+                    <div id="ajoutConjointBtn" class="outline_btn_primary_wh">+ Ajouter un conjoint</div>
+                </div>
+            </div>
+
+            <!-- <div class="form_section">
+                <div class="form_section_title">
+                    <span class="">Mon/Mes enfant(s)</span>
+                </div> 
+                <div class="all_enfants" id="all_enfants">                    
+                </div>
+
+                <div class="btn_container">
+                    <div id="ajoutEnfantBtn" class="outline_btn_primary_wh">+ Ajouter un enfant</div>
+                </div>
+            </div> -->
+
+
+            <div class="form_section">
+                <div class="form_section_title">
+                    <span class="">Mes informations</span>
+                </div> 
+                <!-- <div class="composed-checkbox-container">  -->
+                    <div>
+                        <span for="checkbox-mother" class="sub_title">Date et lieu de naissance</span>
+                        <div class="form_input_container">
+                            <input type="date" name="birthdate" id="birthdate" placeholder="Date de naissance ...">
+                            <input type="text" name="birthplace" id="birthplace" placeholder="Lieu de naissance ...">                            
+                        </div>                        
+                    </div>
+                    <div>
+                        <span for="checkbox-mother" class="sub_title">Rang de naissance</span>
+                        <div class="form_input_container">
+                            <input type="number" name="birthrank" id="birthrank" placeholder="Rang de naissance ...">                            
+                        </div>                        
+                    </div>
+                    <div>
+                        <span for="checkbox-mother" class="sub_title">Email</span>
+                        <div class="form_input_container">
+                            <input type="text" name="email" id="email" placeholder="Email ...">                            
+                        </div>                        
+                    </div>
+                    <div>
+                        <span for="checkbox-mother" class="sub_title">Téléphone</span>
+                        <i>(Numéro Whatsapp de préférence)</i>
+                        <div class="form_input_container">
+                            <input type="text" name="telephone" id="telephone" placeholder="Téléphone ...">                            
+                        </div>                        
+                    </div>
+                    <div>
+                        <span for="checkbox-mother" class="sub_title">Profession</span>
+                        <div class="form_input_container">
+                            <input type="text" name="profession" id="profession" placeholder="Profession ...">                            
+                        </div>                        
+                    </div> 
+                    <div>
+                        <span for="checkbox-mother" class="sub_title">Pays et ville de résidence</span>
+                        <!-- <i class="indication-note"><small>(Pays, Ville, Arrondissement)</small></i> -->
+                        <div class="form_input_container">
+                            <input type="text" name="country" id="country" placeholder="Pays ...">                            
+                            <input type="text" name="city" id="city" placeholder="Ville ..."> 
+                        </div>                        
+                    </div>
+                                       
+                    <div>
+                        <span for="checkbox-mother" class="sub_title">Liens</span>
+                        <div class="form_input_container">
+                            <input type="text" name="linkedin" id="linkedin" placeholder="Linkedin ...">
+                            <input type="text" name="twitter" id="twitter" placeholder="Twitter ...">                             
+                        </div>   
+                        <div class="form_input_container">
+                            <input type="text" name="facebook" id="facebook" placeholder="Facebook ...">
+                            <input type="text" name="instagram" id="instagram" placeholder="Instagram ...">                             
+                        </div>                      
+                    </div>
+                    <div>
+                        <span for="checkbox-mother" class="sub_title">A propos de moi</span>
+                        <div class="form_input_container">
+                            <textarea name="" id="aboutme" cols="30" rows="10" placeholder="A propos de moi ..."></textarea>
+                            <!-- <input type="text" name="my_name" id="new_parent_female_input" placeholder="Email ...">                             -->
+                        </div>                        
+                    </div>
+                <!-- </div> -->
+            </div>
+
+
+
+            <button class="btn btn-primary" type="submit" id="create_fm_btn">Créer un nouveau membre</button> 
+        </form>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block js_scripts %}
+    <!-- <script src="{% static 'js/family_tree/app.js' %}" defer></script>  -->
+    <script src="{% static 'js/family_tree/family_tree_form.js' %}" defer></script>
+{% endblock %}

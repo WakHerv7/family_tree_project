@@ -1,0 +1,81 @@
+.displayNone {
+    display: none !important;
+}
+
+.form-group,
+.input_container {
+    position: relative;
+    width: fit-content !important;
+}
+.form-group {
+    display: flex;
+    gap: 15px;
+}
+.live_options_wh {
+    /* display: none; */
+    position: absolute;
+    left: 0;
+    top: 101%;
+    /* min-height: 30px; */
+    min-width: 300px;
+    height: fit-content;
+    /* width: fit-content; */
+    background: #eee;
+    z-index: 1000;
+    list-style: none;
+}
+.live_options_wh li:hover {
+    color: cornflowerblue;
+    cursor: pointer;
+}
+
+/* /////////// */
+.new_income_category input {
+    display: none;
+}
+.new_income_category span {
+    color: cornflowerblue;
+}
+.new_income_category input:checked ~ span {
+    color: darkslateblue;
+}
+
+
+
+/* //////////////////////////////////////////////////////////////// */
+.modal_container {
+    position: fixed;
+    background: #0000009f;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modal_content {
+    background: white;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 15px;
+    height: 180px;
+    width: 350px;
+    text-align: center;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
