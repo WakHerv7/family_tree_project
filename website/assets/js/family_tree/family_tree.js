@@ -1,5 +1,5 @@
 
-var gap_v = 300;
+var gap_v = 450;
 var gap_h = 150;
 var largest_gen = null;
 var nb_gen = null;
@@ -49,10 +49,21 @@ function createBallSvgCircle(id, x, y) {
     circle0.setAttribute('r', `${radius}`);
     // circle0.setAttribute('fill', 'red');
     circle0.setAttribute('style', `stroke:#ddd; fill:${randomColor}; stroke-width: 1;`);
+    
     //stroke:#ddd;
 
     svgCircles.append(circle0);
 }
+function openBallMenu(ballDomId) {
+    // console.log("openBallMenu : "+ballDomId)
+    const oneBall = document.getElementById(ballDomId);
+    // const oneScreen = document.getElementById("bg_screen0");
+    // console.log(oneScreen)
+    oneBall.classList.toggle('displayNone');
+    // oneScreen.classList.toggle('displayNone');
+    oneBall.setAttribute('onclick', `openBallMenu("${ballDomId}")`);
+}
+
 function createBallSvgInnerText(id, myname, x, y) {
     const svgCircleTexts = document.querySelector('#mysvg #manyCircleTexts');
 
@@ -69,16 +80,42 @@ function createBallSvgInnerText(id, myname, x, y) {
 
 
     const circleTextTop0 = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
-    circleTextTop0.setAttribute('class', `oneBallTextBottom oneBallTextBottom${id}`);
+    circleTextTop0.setAttribute('class', `oneBallTextInner oneBallTextInner${id}`);
     circleTextTop0.setAttribute('x', x-25);
-    circleTextTop0.setAttribute('y', y-18);
+    circleTextTop0.setAttribute('y', y-25);
     circleTextTop0.setAttribute('width', 50);
     circleTextTop0.setAttribute('height', 50);
     const div0 = document.createElement("div");
     div0.innerHTML = getFirst2Initials(myname);
-    div0.setAttribute('style','color: white; text-align:center; font-size:22px; font-weight:bold; user-select: none;')
+    div0.setAttribute('onclick',`openBallMenu("oneBallMenu${id}")`)
+    div0.setAttribute('style','color: white; width:100%; height:100%; background:transparent; text-align:center; font-size:22px; font-weight:bold; user-select: none; display: flex; align-items:center; justify-content:center;')
     circleTextTop0.appendChild(div0);
     svgCircleTexts.append(circleTextTop0);
+
+
+    const svgManyMenus = document.querySelector('#mysvg #manyMenus');
+    const circleTextTop1 = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
+    circleTextTop1.setAttribute('class', `oneBallMenu oneBallMenu${id} displayNone`);
+    circleTextTop1.setAttribute('id', `oneBallMenu${id}`);
+    circleTextTop1.setAttribute('x', x-1080);
+    circleTextTop1.setAttribute('y', `${y-1200}`);
+    // circleTextTop1.setAttribute('width', 200);
+    // circleTextTop1.setAttribute('height', 135);
+    circleTextTop1.setAttribute('width', `${2000}`);
+    circleTextTop1.setAttribute('height', `${2000}`);
+    const div1 = document.createElement("div");
+    div1.innerHTML = `
+    <ul>
+        <li><a href="show_item/${id}">Voir</a></li>
+        <li><a href="update_item/${id}">Modifier</a></li>
+        <li><a href="#">Ajouter un conjoint</a></li>
+        <li><a href="#">Ajouter un enfant</a></li>
+    </ul>
+    `;
+    div1.setAttribute('class','fm_menu ')
+    div1.setAttribute('onclick',`console.log("oneBallMenu${id}")`)
+    circleTextTop1.appendChild(div1);
+    svgManyMenus.append(circleTextTop1);
 
 }
 function createBallSvgLowerText(id, myname, x, y) {
@@ -90,7 +127,7 @@ function createBallSvgLowerText(id, myname, x, y) {
     circleTextTop0.setAttribute('x', x-50);
     circleTextTop0.setAttribute('y', y + radius + 15);
     circleTextTop0.setAttribute('width', 100);
-    circleTextTop0.setAttribute('height', 200);
+    circleTextTop0.setAttribute('height', 70);
 
     const div0 = document.createElement("div");
     div0.innerHTML = myname;
@@ -116,23 +153,37 @@ function drawLine(id, x1, y1, x2, y2) {
     // Line0.setAttribute('stroke-dasharray', 5.5);
     svgLines.append(Line0);
 }
+function toRadians (angle) {
+    return angle * (Math.PI / 180);
+  }
 function couple(x1, y1, x2, y2) {
-    let rad = radius + extraRadiusWidth
+    let rad = radius + extraRadiusWidth;
+    let dx = x2-x1;
+    let dy = y2-y1;
+    let alpha = Math.atan(dx/dy);
+    let beta = toRadians(180) - (alpha+toRadians(90));
     const svgCouples = document.querySelector('#mysvg #manyCouples');
     let path0 = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path0.setAttribute('class', `Couple`);
-    path0.setAttribute('d', `M${x1},${y1-rad} 
-                            L${x2},${y2-rad}
-                            A30,30 0 0,1 ${x2},${y2+rad}
-                            L${x1},${y1+rad}
-                            A30,30 0 0,1 ${x1},${y1-rad}`);
+    path0.setAttribute('d', `M${x1 + ((rad)*Math.sin(beta))},${y1 - ((rad)*Math.cos(beta))} 
+                            L${x2 + ((rad)*Math.sin(beta))},${y2 - ((rad)*Math.cos(beta))}
+                            A30,30 0 0,1 ${x2 - ((rad)*Math.sin(beta))},${y2 + ((rad)*Math.cos(beta))}
+                            L${x1 - ((rad)*Math.sin(beta))},${y1 + ((rad)*Math.cos(beta))}
+                            A30,30 0 0,1 ${x1 + ((rad)*Math.sin(beta))},${y1 - ((rad)*Math.cos(beta))}`);
+
+    // path0.setAttribute('d', `M${x1},${y1-rad} 
+    //                         L${x2},${y2-rad}
+    //                         A30,30 0 0,1 ${x2},${y2+rad}
+    //                         L${x1},${y1+rad}
+    //                         A30,30 0 0,1 ${x1},${y1-rad}`);
+
     // path0.setAttribute('d', `M${50},${50+(i*gap_v)-30} 
     //                         L${50+((j-1)*gap_h)},${50+(i*gap_v)-30}
     //                         A30,30 0 0,1 ${50+((j-1)*gap_h)},${50+(i*gap_v)+30}
     //                         L${50},${50+(i*gap_v)+30}
     //                         A30,30 0 0,1 ${50},${50+(i*gap_v)-30}`);
                             // L${50},${(i*gap_v)+30}
-    path0.setAttribute('style', "stroke:#fff; stroke-width:2; fill:none;");
+    path0.setAttribute('style', "stroke:#ffffff99; stroke-width:2; fill:none;");
     svgCouples.append(path0);
 }
 
@@ -188,7 +239,7 @@ function initializeSvgZone(viewboxWidth, viewboxHeight) {
     const svgImage = document.getElementById('mysvg');
     const svgContainer = document.getElementById('mysvgcontainer');
     var viewBox = {
-        x:0,
+        x:-300,
         y:0,
         w:viewboxWidth,
         h:viewboxHeight
@@ -291,14 +342,19 @@ function initializeSvgZone(viewboxWidth, viewboxHeight) {
                                 parentTab["fmsp"] = parentTabAllGen[i-1]["fmsp"]                               
 
                                 for (let k = 0; k < parentTab["fm"].length; k++) {
+                                    let parentHasChildren = false;
                                     for (let p = 0; p < familyGenerations[i].length; p++) {
                                         let myParentIds = getFMParentIds(family, familyGenerations[i][p]);
-                                        if (parentTab["fm"][k]["id"] == myParentIds["mother"] || parentTab["fm"][k]["id"] == myParentIds["father"]) {
+                                        if ((parentTab["fm"][k]["id"] == myParentIds["mother"] && myParentIds["mother"] != null) || (parentTab["fm"][k]["id"] == myParentIds["father"] && myParentIds["father"] != null)) {
                                             reorganizedGen["fm"].push({"id":familyGenerations[i][p], "children":0, "allChildren":0, "parentId": parentTab["fm"][k]["id"]})
                                             // parentTab["fm"][k]["children"]++
                                             parentTabAllGen[i-1]["fm"][k]["children"]++;
                                             parentTabAllGen[i-1]["fm"][k]["allChildren"]++;
-                                        }
+                                            parentHasChildren = true;
+                                        }                                        
+                                    }
+                                    if (parentHasChildren == false) {
+                                        reorganizedGen["fm"].push({"id":null, "children":0, "allChildren":0, "parentId": parentTab["fm"][k]["id"]})
                                     }
                                 }
                                 for (let k = 0; k < familyGenerations[i].length; k++) {
@@ -352,6 +408,7 @@ function initializeSvgZone(viewboxWidth, viewboxHeight) {
 
                             }
                         }
+                        largest_gen["size"] = parentTabAllGen[0]["fm"][0]["allChildren"];                        
                         console.log(parentTabAllGen);
 
                         let distTab = [];
@@ -364,21 +421,30 @@ function initializeSvgZone(viewboxWidth, viewboxHeight) {
                             let distxx = [];
                             for (j = 0; j < parentTabAllGen[i]["fm"].length; j++) {
                                 dist.push(prev_x);
-                                if (parentTabAllGen[i]["fm"][j]["allChildren"] > 0) {
-                                    // radius
-                                    let ll = (((parentTabAllGen[i]["fm"][j]["allChildren"]-1)*gap_h));
-                                    let xx = prev_x+(ll/2);
-                                    let fm = {"id":parentTabAllGen[i]["fm"][j]["id"], "x":xx, "y":50+(i*gap_v), "length": ll, "gender":null, "couples":[]}
-                                    fmCoord.push(fm)
-                                    distxx.push({"x":xx, "prev_x": prev_x, "length": ll, "allChildren": (parentTabAllGen[i]["fm"][j]["allChildren"])});
-                                    prev_x += ll+gap_h;
-                                } else {
-                                    // let fm = {"id":parentTabAllGen[i]["fm"][j], "x":50+(j*gap_h), "y":50+(i*gap_v), "length":0, "gender":null, "couples":[]}
-                                    let fm = {"id":parentTabAllGen[i]["fm"][j]["id"], "x":prev_x, "y":50+(i*gap_v), "length":0, "gender":null, "couples":[]}
-                                    fmCoord.push(fm);
-                                    distxx.push({"x":prev_x, "prev_x": prev_x, "length": 0, "allChildren": (parentTabAllGen[i]["fm"][j]["allChildren"])});
+                                if (parentTabAllGen[i]["fm"][j]["id"] == null) {
                                     prev_x += gap_h;
+                                    // console.log('voluntary space')
+                                    // console.log(parentTabAllGen[i]["fm"][j])
+                                } else {
+                                    if (parentTabAllGen[i]["fm"][j]["allChildren"] > 0) {
+                                        // radius
+                                        let ll = (((parentTabAllGen[i]["fm"][j]["allChildren"]-1)*gap_h));
+                                        let xx = prev_x+(ll/2);
+                                        let fm = {"id":parentTabAllGen[i]["fm"][j]["id"], "x":xx, "y":50+(i*gap_v), "length": ll, "gender":null, "couples":[]}
+                                        fmCoord.push(fm)
+                                        distxx.push({"x":xx, "prev_x": prev_x, "length": ll, "allChildren": (parentTabAllGen[i]["fm"][j]["allChildren"])});
+                                        prev_x += ll+gap_h;
+                                    } else {
+                                       
+                                        // let fm = {"id":parentTabAllGen[i]["fm"][j], "x":50+(j*gap_h), "y":50+(i*gap_v), "length":0, "gender":null, "couples":[]}
+                                        let fm = {"id":parentTabAllGen[i]["fm"][j]["id"], "x":prev_x, "y":50+(i*gap_v), "length":0, "gender":null, "couples":[]}
+                                        fmCoord.push(fm);
+                                        distxx.push({"x":prev_x, "prev_x": prev_x, "length": 0, "allChildren": (parentTabAllGen[i]["fm"][j]["allChildren"])});
+                                        prev_x += gap_h;
+                                        
+                                    }
                                 }
+                                
                                 // createBallSvgCircle(familyGenerations[i][j], 50+(j*gap_h), 50+(i*gap_v))
                                 // createBallSvgInnerText(familyGenerations[i][j], 50+(j*gap_h), 50+(i*gap_v))
                             }
@@ -415,7 +481,7 @@ function initializeSvgZone(viewboxWidth, viewboxHeight) {
                                     // console.log("///")
                                     // console.log(fmCoord[i]["id"])
                                     // console.log("///")
-                                    if(fm["spouses"].length > 0) {
+                                    if(fm["spouses"].length > 0 && fm["spouses"].length <2) {
                                         for (let j = 0; j < fm["spouses"].length; j++) {
                                             let fmsp = getById(family, fm["spouses"][j])
                                             
@@ -436,6 +502,60 @@ function initializeSvgZone(viewboxWidth, viewboxHeight) {
                                                         "x1": fmCoord[i]["x"], "y1": fmCoord[i]["y"],
                                                         "x2": fmc["x"], "y2": fmc["y"],
                                                         "xmid": (fmCoord[i]["x"] + fmc["x"])/2,
+                                                        "ymid": fmc["y"]+radius + extraRadiusWidth
+                                                    };
+                                                fmCoupleCoord.push(fmCouple);
+                                                fmCoord[i]["couples"].push(fmCouple["id"]);
+                                                fmCoord[fmci]["couples"].push(fmCouple["id"]);
+                                                lastCoupleId++
+                                            }
+                                        }
+                                    }
+                                    else if(fm["spouses"].length >= 2) {
+                                        for (let j = 0; j < fm["spouses"].length; j++) {
+                                            let fmsp = getById(family, fm["spouses"][j])                                            
+                                            let fmc = getById(fmCoord, fm["spouses"][j])
+                                            let fmci = getFMIndex(fmCoord, fm["spouses"][j])
+
+                                            if (fmsp["father"] == null && fmsp["mother"] == null) {                                                
+                                                fmCoord[fmci]["x"] = gap_h*j*2
+                                                fmc["x"] = gap_h*j*2
+                                            }
+                                        }
+                                        let nb_sp = fm["spouses"].length;
+                                        let largeur_sp = (nb_sp-1) * gap_h*2;
+                                        // console.log("largeur_sp : ", largeur_sp);
+                                        let xmidlsp = largeur_sp/2;
+                                        // console.log("xmidlsp : ", xmidlsp);
+                                        // console.log("fmCoord[i][x] : ", fmCoord[i]["x"]);
+                                        let dxx = fmCoord[i]["x"] - xmidlsp;
+                                        // console.log("dxx : ", dxx);
+
+                                        for (let j = 0; j < fm["spouses"].length; j++) {
+                                            let fmsp = getById(family, fm["spouses"][j])
+                                            
+                                            let fmc = getById(fmCoord, fm["spouses"][j])
+                                            let fmci = getFMIndex(fmCoord, fm["spouses"][j])
+                                            // console.log("///")
+                                            // console.log(fmsp)
+                                            if (fmsp["father"] == null && fmsp["mother"] == null) {                                                
+                                                fmCoord[fmci]["x"] = fmCoord[fmci]["x"];
+                                                fmc["x"] = fmc["x"]+dxx;
+                                                console.log("fmc[x] : ", fmc["x"]+dxx);
+                                                // debugger
+                                                // fmCoord[fmci]["y"] = fmCoord[i]["y"]+(gap_v/2)
+                                                fmc["y"] = fmCoord[i]["y"] + (gap_v/3.3)
+                                                
+                                                // console.log("///")
+                                                // console.log(fmCoord[fmci])
+                                                // console.log(fmc)
+                                            }
+
+                                            if (fmc) {
+                                                fmCouple = {"id":lastCoupleId, "id1":fmCoord[i]["id"], "id2":fmc["id"],
+                                                        "x1": fmCoord[i]["x"], "y1": fmCoord[i]["y"],
+                                                        "x2": fmc["x"], "y2": fmc["y"],
+                                                        "xmid": fmc["x"],
                                                         "ymid": fmc["y"]+radius + extraRadiusWidth
                                                     };
                                                 fmCoupleCoord.push(fmCouple);
@@ -526,9 +646,17 @@ function initializeSvgZone(viewboxWidth, viewboxHeight) {
 
                         for (let i = 0; i < fmCoord.length; i++) {
                             let fm = getById(family, fmCoord[i]["id"])
-                            createBallSvgCircle(fmCoord[i]["id"], fmCoord[i]["x"]+padding_h, fmCoord[i]["y"]+padding_v)
-                            createBallSvgInnerText(fmCoord[i]["id"], fm["name"], fmCoord[i]["x"]+padding_h, fmCoord[i]["y"]+padding_v)                            
-                            createBallSvgLowerText(fmCoord[i]["id"], fm["name"], fmCoord[i]["x"]+padding_h, fmCoord[i]["y"]+padding_v)
+                            
+                            if (!fm) {
+                                console.log("__fm__")
+                                console.log(fm)
+                                console.log(fmCoord[i])
+                            }
+                            if (fm) {
+                                createBallSvgCircle(fmCoord[i]["id"], fmCoord[i]["x"]+padding_h, fmCoord[i]["y"]+padding_v)
+                                createBallSvgInnerText(fmCoord[i]["id"], fm["name"], fmCoord[i]["x"]+padding_h, fmCoord[i]["y"]+padding_v)                            
+                                createBallSvgLowerText(fmCoord[i]["id"], fm["name"], fmCoord[i]["x"]+padding_h, fmCoord[i]["y"]+padding_v)
+                            }
                         }
                         for (let i = 0; i < fmCoupleCoord.length; i++) {                            
                             couple(fmCoupleCoord[i]["x1"]+padding_h, fmCoupleCoord[i]["y1"]+padding_v, fmCoupleCoord[i]["x2"]+padding_h, fmCoupleCoord[i]["y2"]+padding_v)
@@ -543,7 +671,7 @@ function initializeSvgZone(viewboxWidth, viewboxHeight) {
 
                         // mySvg.setAttribute('width', `${50+(gap_h*largest_gen["size"])}px`);
                         // mySvg.setAttribute('height', `${50+(gap_v*nb_gen)}px`);
-                        initializeSvgZone(80+(gap_h*largest_gen["size"]), 80+(gap_v*nb_gen))
+                        initializeSvgZone(500+(gap_h*largest_gen["size"]), 80+(gap_v*nb_gen))
 
                         // console.log(allClients)
                         // alert("ALL CLIENTS LIST SET !!!");

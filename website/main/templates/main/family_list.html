@@ -40,8 +40,14 @@
             <td>{{item.spouses}}</td>
             <td>{{item.generation}}</td>
             <td>
-                <a href="{% url 'updateItem' item.id %}" class="btn btn-primary">Modifier</a>
-                <a href="#" onclick="openDeleteModal(event,'{{item.id}}', '{{item.name}}')" class="btn btn-danger">Supprimer</a>
+                <!-- class="btn btn-primary" -->
+                <a href="{% url 'updateItem' item.id %}" style="text-decoration: none; padding: 5px 5px; margin: 0 10px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path fill="#0056b3" transform="scale(0.5)" d="M24 42v-3.55l10.8-10.8 3.55 3.55L27.55 42ZM6 31.5v-3h15v3Zm34.5-2.45-3.55-3.55 1.45-1.45q.4-.4 1.05-.4t1.05.4l1.45 1.45q.4.4.4 1.05t-.4 1.05ZM6 23.25v-3h23.5v3ZM6 15v-3h23.5v3Z"/></svg>
+                </a>
+                <!-- class="btn btn-danger" -->
+                <a href="#" onclick="openDeleteModal(event,'{{item.id}}', '{{item.name}}')" style="text-decoration: none; padding: 5px 5px; margin: 0 10px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path fill="#bd2130" transform="scale(0.5)" d="M13.05 42q-1.25 0-2.125-.875T10.05 39V10.5H8v-3h9.4V6h13.2v1.5H40v3h-2.05V39q0 1.2-.9 2.1-.9.9-2.1.9Zm21.9-31.5h-21.9V39h21.9Zm-16.6 24.2h3V14.75h-3Zm8.3 0h3V14.75h-3Zm-13.6-24.2V39Z"/></svg>
+                </a>
                 <!-- <a href="{% url 'deleteItem' item.id %}" class="btn btn-danger">Supprimer</a> -->
             </td>
         </tr>
@@ -58,8 +64,8 @@
             Etes-vous sûr de vouloir supprimer <strong id="fmName">Mon nom</strong> de la famille ?
         </div>
         <div class="btn_container mt-4">
-            <a href="#" id="delete_fm_btn" class="btn btn-light mr-2">Oui</a>
-            <a href="#" onclick="closeDeleteModal(event)" id="modal_closer_btn" class="btn btn-danger">Non, je ne veux pas</a>
+            <a href="#" id="delete_fm_btn" class="btn btn-danger mr-2">Oui</a>
+            <a href="#" onclick="closeDeleteModal(event)" id="modal_closer_btn" class="btn btn-light">Non, je ne veux pas</a>
         </div>
     </div>
 </div>
