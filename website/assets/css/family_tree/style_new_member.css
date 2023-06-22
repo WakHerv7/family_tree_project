@@ -14,6 +14,7 @@
   display: flex;
   justify-content: flex-end;
   position: relative;
+  gap: 30px;
 }
 /* .back_button {
   position: absolute;
@@ -21,16 +22,41 @@
   right: 0;
 } */
 
+.photo_container_wh {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  margin-bottom: 15px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #2196F3;
+}
+.photo_container_wh img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+.photo_container_wh .myInitials {
+  font-size: 40px;
+  font-weight: bolder;
+  color: #2196F3;
+}
 
 .form_container_wh {
     border: 2px solid #ccc;
     border-radius: 15px;
-    text-align: center;    
+    /* text-align: center;     */
     width: 100%;
     max-width: 800px;
     padding: 15px;
 }
-
+.form_container_wh #form_title {
+  text-align: center !important; 
+}
 .form_container_wh form {
     width: 100%;
     text-align: left;

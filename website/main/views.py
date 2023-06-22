@@ -1,4 +1,7 @@
 import json
+import time
+import os
+from PIL import Image
 from django.shortcuts import render, redirect
 from .forms import RegisterForm, FamilyMemberForm
 from django.contrib.auth import login, logout, authenticate
@@ -238,16 +241,23 @@ def Family(request):
 # ############################################################################################33
 # ############################################################################################33
 
-def NewFamilyMember(request):
+def NewFamilyMember(request, document_root):
     if request.method == 'POST':
         # print("WE ARE IN A POST METHOD !!!   WE ARE IN A POST METHOD !!!   WE ARE IN A POST METHOD !!!")
         # form = FamilyMemberForm(PARENT_MALES, PARENT_FEMALES, SPOUSES, request.POST)        
         
         currentMemberId = request.POST['currentMemberId']
-        
+        urlLastButOneItem = request.POST['urlLastButOneItem']
         myName = request.POST['myName']
         myGender = request.POST['myGender']
         myLifeStatus = request.POST['myLifeStatus']
+        isIncomingSpouse = request.POST['isIncomingSpouse']
+        noPhotoCheck = False if request.POST['noPhotoCheck'] == 'false' else True
+        uploadedPhotoName = request.POST['uploadedPhotoName']        
+        # print("*********************************************************")
+        # print(uploadedPhotoName)
+        # print("*********************************************************")
+        uploadedPhoto = request.FILES['uploadedPhoto'] if uploadedPhotoName != 'undefined' else False
 
         fatherId = request.POST['fatherId']
         newFatherCheck = request.POST['newFatherCheck']
@@ -279,8 +289,8 @@ def NewFamilyMember(request):
 
 
         if hasFatherCheck == 'false':
-            fatherId = None
-        elif newFatherCheck == 'true':
+            fatherId = None        
+        elif newFatherCheck == 'true' and urlLastButOneItem != 'new_spouse':
             lv = lifeValue(fatherLifeStatusValue)
             indiv = Individu(
                 name = newFatherName,
@@ -290,11 +300,13 @@ def NewFamilyMember(request):
             )
             indiv.save() 
             fatherId = indiv.id
+        else:
+            fatherId = None
 
         if hasMotherCheck == 'false':
             motherId = None
-        elif newMotherCheck == 'true':            
-            lv = lifeValue(fatherLifeStatusValue)
+        elif newMotherCheck == 'true' and urlLastButOneItem != 'new_spouse':            
+            lv = lifeValue(motherLifeStatusValue)
             indiv = Individu(
                 name = newMotherName,
                 gender = 'f',
@@ -303,9 +315,13 @@ def NewFamilyMember(request):
             )
             indiv.save() 
             motherId = indiv.id
+        else:
+            motherId = None
 
         my_lv = lifeValue(myLifeStatus)
-        if currentMemberId != 'null':
+        
+        # Modify family member
+        if currentMemberId != 'null' and urlLastButOneItem == 'update_item':
             cmo = Individu.objects.get(id=currentMemberId)
             cmo.name = myName
             cmo.gender = myGender
@@ -327,6 +343,39 @@ def NewFamilyMember(request):
             cmo.facebook = facebook
             cmo.instagram = instagram
             cmo.aboutme = aboutme
+            # cmo.isIncomingSpouse = False if isIncomingSpouse == 'false' else True,
+
+            if cmo.isIncomingSpouse :
+                cmo.sFatherName = newFatherName
+                cmo.sMotherName = newMotherName
+                mlv = lifeValue(motherLifeStatusValue)
+                flv = lifeValue(fatherLifeStatusValue)
+                cmo.sFatherDead = flv["dv"]
+                cmo.sMotherDead = mlv["dv"]
+
+            # cmo.isIncomingSpouse = False if isIncomingSpouse == 'false' else True,
+            print('*********************************************************************')
+            print(noPhotoCheck)
+            print('*********************************************************************')
+            if noPhotoCheck:
+                cmo.photoName = None
+                cmo.photoPath.delete()
+            else:
+                if uploadedPhoto:
+                    if cmo.photoPath:
+                        cmo.photoPath.delete()
+                
+                    timestr = time.strftime("%Y%m%d-%H%M%S")
+                    photoName = 'Photo-'+timestr+".jpg"                
+                    pathToConvertedFiles = os.path.join(document_root,'photos', photoName)
+                    relativePathToConvertedFiles = os.path.join('photos', photoName)
+
+                    img = Image.open(uploadedPhoto)
+                    img = img.convert('RGB')
+                    img.thumbnail((256, 256))
+                    img.save(pathToConvertedFiles)                
+                    cmo.photoName = photoName
+                    cmo.photoPath.name = relativePathToConvertedFiles
             # ######################
             SVs = []
             # print("WE ARE IN A PATCH METHOD !!!   WE ARE IN A PATCH METHOD !!!   WE ARE IN A PATCH METHOD !!!")
@@ -353,6 +402,7 @@ def NewFamilyMember(request):
             cmo.save()
             # ######################
         else:
+            # Create a new family member
             fm = Individu(
                 name = myName,
                 gender = myGender,
@@ -373,9 +423,34 @@ def NewFamilyMember(request):
                 twitter = twitter,
                 facebook = facebook,
                 instagram = instagram,
-                aboutme = aboutme,            
+                aboutme = aboutme,
+                isIncomingSpouse = False if isIncomingSpouse == 'false' else True,                               
             )
-            fm.save()        
+            if urlLastButOneItem == 'new_spouse' :
+                fm.isIncomingSpouse = True
+                fm.sFatherName = newFatherName
+                fm.sMotherName = newMotherName
+                mlv = lifeValue(motherLifeStatusValue)
+                flv = lifeValue(fatherLifeStatusValue)
+                fm.sFatherDead = flv["dv"]
+                fm.sMotherDead = mlv["dv"]
+
+            
+            if not(noPhotoCheck) and uploadedPhoto:
+                # cmo = Individu.objects.get(id=fm.id)
+                timestr = time.strftime("%Y%m%d-%H%M%S")
+                photoName = 'Photo-'+timestr+".jpg"
+                pathToConvertedFiles = os.path.join(document_root,'photos', photoName)
+                relativePathToConvertedFiles = os.path.join('photos', photoName)
+                img = Image.open(uploadedPhoto)
+                img = img.convert('RGB')
+                img.thumbnail((256, 256))
+                img.save(pathToConvertedFiles)
+
+                fm.photoName = photoName
+                fm.photoPath.name = relativePathToConvertedFiles
+                
+            fm.save()      
             # ######################
             SVs = []
             for sv in json.loads(spouseValues):
@@ -436,6 +511,7 @@ def FamilyData(request):
             "spouses": indiv_spouses,
             "generation": None,
             "dead": indiv.dead,
+            "photo": indiv.photoPath.url if indiv.photoName else None,
             "isIncomingSpouse": indiv.isIncomingSpouse,
         }
 
@@ -606,6 +682,7 @@ def FamilyFormData(request):
             cmoSpouses.append(spouse)
 
         cm = {
+            "myPhoto": cmo.photoPath.url if cmo.photoPath else None,
             "myName": cmo.name,
             "myGender": cmo.gender,
             "myLifeStatus": lifeStatusFrontend(cmo.dead, cmo.youngdead),
@@ -636,6 +713,11 @@ def FamilyFormData(request):
             "facebook": cmo.facebook,
             "instagram": cmo.instagram,
             "aboutme": cmo.aboutme,
+            "isIncomingSpouse": cmo.isIncomingSpouse,
+            "sFatherName": cmo.sFatherName,
+            "sFatherStatus": lifeStatusFrontend(cmo.sFatherDead, False),
+            "sMotherName": cmo.sMotherName,
+            "sMotherStatus": lifeStatusFrontend(cmo.sMotherDead, False),
         }
 
 
@@ -759,6 +841,11 @@ def FamilyList(request):
     return render(request, 'main/family_list.html', context)
 
 
+def newChild(request, pk):
+    return render(request, 'main/new_fm.html')
+
+def newSpouse(request, pk):
+    return render(request, 'main/new_fm.html')
 
 
 def deleteItem(request, pk):
@@ -766,11 +853,8 @@ def deleteItem(request, pk):
     indiv.delete()
     return redirect('family_list')
 
-
 def updateItem(request, pk):
-    indiv = Individu.objects.get(id=pk)
     return render(request, 'main/new_fm.html')
-
 
 def showItem(request, pk):
     cmo = Individu.objects.get(id=pk)
@@ -794,7 +878,10 @@ def showItem(request, pk):
         cmoSpouses.append(spouse)
 
     cm = {
+        "myPhoto": cmo.photoPath.url if cmo.photoPath else None,
+        "myID": cmo.id,
         "myName": cmo.name,
+        "myInitials": getFirst2Initials(cmo.name),
         "myGender": genderFrontend(cmo.gender),
         "myLifeStatus": lifeStatusFrontend(cmo.dead, cmo.youngdead, cmo.gender),
         "father": {
@@ -826,10 +913,27 @@ def showItem(request, pk):
         "instagram": '' if cmo.instagram == None else cmo.instagram,
         "aboutme": '' if cmo.aboutme == None else cmo.aboutme,
     }
-    
+
+    if cmo.isIncomingSpouse :
+        import random
+
+        cm["father"]["id"] = random.randint(300, 700)
+        cm["father"]["name"] = cmo.sFatherName
+        cm["father"]["status"] = lifeStatusFrontend(cmo.sFatherDead, False, 'm')
+        cm["mother"]["id"] = random.randint(300, 700)
+        cm["mother"]["name"] = cmo.sMotherName
+        cm["mother"]["status"] = lifeStatusFrontend(cmo.sMotherDead, False, 'f')
+
     return render(request, 'main/show_fm.html', cm)
 
-
+def getFirst2Initials(name) :
+    w = ''
+    namesTab = name.split(' ')
+    for idx,item  in enumerate(namesTab):
+        if idx < 2:
+            w = w + namesTab[idx][0]
+    w = w.upper()
+    return w
 
 def lifeStatusFrontend(dv, ydv, gend=None):
     if gend == None : 

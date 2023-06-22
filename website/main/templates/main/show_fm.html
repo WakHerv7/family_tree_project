@@ -1,7 +1,7 @@
 
 {% extends 'main/base.html' %}
 {% load static %}
-{% block title %}Nouveau membre de famille{% endblock %}
+{% block title %}{{myName}}{% endblock %}
 
 {% block css_styles %}
 <link rel="stylesheet" href="{% static '/css/family_tree/style_new_member.css' %}">
@@ -10,16 +10,28 @@
 {% block content %}
 <div class="super_container_wh">
     <div class="back_button_container">
-        <a class="back_button" href="/family_list">Retour</a>
+        <a class="back_button" href="{% url 'updateItem' myID %}">Modifier</a>
+        <a class="back_button" href="/family_list">Retour vers la liste</a>
     </div>
     <div class="form_container_wh mb-5">
+        <span class="photo_container_wh">
+            {% if myPhoto %}
+            <img src="{{myPhoto}}" alt="">
+            {% else %}
+            <span class="myInitials">{{myInitials}}</span>
+            {% endif %}
+        </span>
         <h2 id="form_title">{{myName}}</h2>
         <form class="mb-5" action="" method="POST">
             {% csrf_token %}
             <div class="form_section">
                 <div class="form_section_title">
                     <span class="">Moi</span>
-                </div>                
+                </div>
+                <div class="form_radio_container">
+                    <!-- <div class="radio_group_title">Photo : </div> -->
+                    
+                </div>
                 <div class="form_radio_container">
                     <div class="radio_group_title">Nom : </div>
                     <span>{{myName}}</span>

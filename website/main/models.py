@@ -35,7 +35,26 @@ class Individu(models.Model):
     instagram = models.CharField(max_length=255, null=True, blank=True)
     aboutme = models.TextField(null=True, blank=True)
     isIncomingSpouse = models.BooleanField(default=False)
+    sFatherName = models.CharField(max_length=255, null=True, blank=True)
+    sFatherDead = models.BooleanField(default=False)
+    sMotherName = models.CharField(max_length=255, null=True, blank=True)
+    sMotherDead = models.BooleanField(default=False)
+    photoName = models.CharField(max_length=255, null=True, blank=True)
+    photoPath = models.ImageField (upload_to="photos/" ,null=True, blank=True)
+
+    def delete(self, *args, **kwargs):
+        self.photoPath.delete()
+        super().delete(*args, **kwargs)
 
     @property
     def spouseslist(self):
         return list(self.spouses.all())
+
+
+# class UploadedFile(models.Model):
+#     name = models.CharField(max_length=255)
+#     path = models.ImageField (upload_to="uploaded/" ,null=True, blank=True)
+
+#     def delete(self, *args, **kwargs):
+#         self.path.delete()
+#         super().delete(*args, **kwargs)

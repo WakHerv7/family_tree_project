@@ -39,9 +39,13 @@ var myGenderValue;
 var myLifeStatusValue;
 var motherLifeStatusValue;
 var fatherLifeStatusValue;
+var noPhotoCheck = false;
 
 var currentMemberId = null;
 var currentMember = null;
+var urlLastItem = null;
+var urlLastButOneItem = null;
+var isIncomingSpouse = false;  
 
 (function ($) {
     $(document).ready(function ($) {
@@ -49,16 +53,23 @@ var currentMember = null;
         function getFamilyMemebers() {
             let  currentPath = window.location.pathname;
             let currentPathArray = currentPath.split("/");
-            let last = currentPathArray[currentPathArray.length-1];
-            if (!isNaN(last))
+            urlLastButOneItem = currentPathArray[currentPathArray.length-2];
+            urlLastItem = currentPathArray[currentPathArray.length-1];
+            if (urlLastButOneItem == 'update_item' && !isNaN(urlLastItem))
             {
                 currentMemberId = currentPathArray[currentPathArray.length-1];
                 document.getElementById('form_title').innerHTML = "Modifier un membre de famille"
                 document.getElementById('create_fm_btn').innerHTML = "Valider les modifications"
-                // alert(currentMemberId)
+                
             }
-            else{
-                // alert(isNaN(last))
+            else if (urlLastButOneItem == 'new_child' && !isNaN(urlLastItem)) 
+            {
+                currentMemberId = urlLastItem;
+            }
+            else if (urlLastButOneItem == 'new_spouse' && !isNaN(urlLastItem)) 
+            {
+                currentMemberId = urlLastItem;
+                isIncomingSpouse = true;
             }
 
 
@@ -72,10 +83,116 @@ var currentMember = null;
                     allFemales = response["allFemales"];
                     currentMember = response['currentMember'];
 
-                    if (currentMemberId !== null) {
+                    if (currentMemberId !== null && urlLastButOneItem == 'new_child') {
+                        if (currentMember["myGender"] == 'f') {
+                            /**
+                             * MOTHER
+                             */
+                            let motherSelect = document.getElementById(`parent_female_select`);
+                            motherSelect.innerHTML = "";
+                            let motherGenderArray = document.getElementsByName(`radio_sexe_mother`);
+                            let motherLifeStatusArray = document.getElementsByName(`radio_status_mother`);
+                            // //////////////////////////////
+                            document.getElementById('noParentCheck').checked = false;
+                            document.getElementById('checkbox-mother').checked = true;                            
+                            for(let i = 0; i < motherLifeStatusArray.length; i++) {
+                                if(motherLifeStatusArray[i].value == currentMember["mother"]["status"]){
+                                    motherLifeStatusArray[i].checked = true
+                                }
+                                updateStatusGenderSelectList(motherSelect, motherLifeStatusArray[i], allMales, allFemales, motherGenderArray)
+                            }                            
+                            // *********************************************
+                            let opts = document.getElementById('parent_female_select').children;
+                            for(let i = 0; i < opts.length; i++) {
+                                // console.log(opts[i].value);
+                                if(opts[i].value == currentMemberId){
+                                    // console.log(opts[i]);
+                                    opts[i].setAttribute("selected", true);
+                                }
+                            }
+
+
+                        } else if (currentMember["myGender"] == 'm'){
+                            /**
+                             * FATHER
+                             */
+                            let fatherSelect = document.getElementById(`parent_male_select`);
+                            fatherSelect.innerHTML = "";
+                            let fatherGenderArray = document.getElementsByName(`radio_sexe_father`);
+                            let fatherLifeStatusArray = document.getElementsByName(`radio_status_father`);
+                            // //////////////////////////////
+                            document.getElementById('noParentCheck').checked = false;
+                            document.getElementById('checkbox-father').checked = true;                            
+                            for(let i = 0; i < fatherLifeStatusArray.length; i++) {
+                                if(fatherLifeStatusArray[i].value == currentMember["father"]["status"]){
+                                    fatherLifeStatusArray[i].checked = true
+                                }
+                                updateStatusGenderSelectList(fatherSelect, fatherLifeStatusArray[i], allMales, allFemales, fatherGenderArray)
+                            }                            
+                            // *********************************************
+                            let opts = document.getElementById('parent_male_select').children;
+                            for(let i = 0; i < opts.length; i++) {
+                                // console.log(opts[i].value);
+                                if(opts[i].value == currentMemberId){
+                                    // console.log(opts[i]);
+                                    opts[i].setAttribute("selected", true);
+                                }
+                            }
+
+                        }                        
+                        
+                    }
+
+                    // ==================================================================
+                    else if (currentMemberId !== null && urlLastButOneItem == 'new_spouse') {
+                        // parents_form_section
+                        document.getElementById('form_title').innerHTML = `Nouveau conjoint pour <br> ${currentMember['myName']}`                        
+                        // document.getElementById(`parents_form_section`).classList.add('displayNone');
+                        document.getElementById(`parent_male_select`).classList.toggle('displayNone')
+                        document.getElementById(`new_parent_male_input`).setAttribute('type', 'text')
+                        document.getElementById(`parent_female_select`).classList.toggle('displayNone')
+                        document.getElementById(`new_parent_female_input`).setAttribute('type', 'text')
+                        
+                        document.getElementById('ajoutConjointBtn').classList.add('displayNone');                        
+                        addSpouse();
+                        document.getElementById(`mini_close_conjoint_${nbConjoints}`).classList.add('displayNone');
+                        // document.getElementById(`new_conjoint_span_${nbConjoints}`).classList.add('displayNone');
+                        // *********************************************
+                        let conjointSelect = document.getElementById(`conjoint_select_${nbConjoints}`);
+                        conjointSelect.innerHTML = "";
+                        let conjointGenderArray = document.getElementsByName(`radio-sexe-conjoint-${nbConjoints}`);
+                        for(let i = 0; i < conjointGenderArray.length; i++) {
+                            if(conjointGenderArray[i].value == currentMember["myGender"]){
+                                conjointGenderArray[i].checked = true;
+                            }                            
+                        }
+                        // *********************************************
+                        let conjointLifeStatusArray = document.getElementsByName(`radio-statut-conjoint-${nbConjoints}`);                            
+                        for(let i = 0; i < conjointLifeStatusArray.length; i++) {
+                            if(conjointLifeStatusArray[i].value == currentMember["myLifeStatus"]){
+                                conjointLifeStatusArray[i].checked = true;
+                            }
+                            updateStatusGenderSelectList(conjointSelect, conjointLifeStatusArray[i], allMales, allFemales, conjointGenderArray)
+                        }
+                        // *********************************************
+                        let opts = document.getElementById(`conjoint_select_${nbConjoints}`).children;
+                        for(let i = 0; i < opts.length; i++) {
+                            if(opts[i].value == currentMemberId){
+                                opts[i].setAttribute("selected", true);
+                            }
+                        }
+                        // *********************************************
+                        
+                    }
+
+                    // ===================================================================
+                    else if (currentMemberId !== null && urlLastButOneItem == 'update_item') {
                         /**
                          * MOI
                          */
+                        if (currentMember["isIncomingSpouse"]) {
+                            isIncomingSpouse = true;
+                        }
                         document.getElementById('my_name').value = currentMember["myName"];    
 
                         let myGenderArray = document.getElementsByName('radio_gender_moi');    
@@ -90,6 +207,19 @@ var currentMember = null;
                                 myLifeStatusArray[i].checked = true
                             }
                         }
+                        const dropZoneElement = document.getElementById("dropzone");
+                        
+                        if (currentMember["myPhoto"] != null) {
+                            // const inputElement = document.getElementById("real-file");
+                            // inputElement.files = currentMember["myPhoto"];
+
+                            let thumbnailElement = document.createElement("div");
+                            thumbnailElement.classList.add("droparea__thumb");
+                            thumbnailElement.dataset.label = "Modifier";
+                            
+                            thumbnailElement.style.backgroundImage = `url('${currentMember["myPhoto"]}')`;
+                            dropZoneElement.appendChild(thumbnailElement);
+                          }
                         /**
                          * MOTHER
                          */
@@ -115,7 +245,22 @@ var currentMember = null;
                                     opts[i].setAttribute("selected", true);
                                 }
                             }                            
-                        }else {
+                        }
+                        // Spouse Mother ///////////////////////////////
+                        else if (currentMember["isIncomingSpouse"] && currentMember["sMotherName"]) {
+                            document.getElementById(`parent_female_select`).classList.toggle('displayNone');
+                            document.getElementById(`new_parent_female_input`).setAttribute('type', 'text');
+                            document.getElementById('noParentCheck').checked = false;
+                            document.getElementById('checkbox-mother').checked = true;                            
+                            document.getElementById(`new_parent_female_input`).value = currentMember["sMotherName"];
+                            for(let i = 0; i < motherLifeStatusArray.length; i++) {
+                                if(motherLifeStatusArray[i].value == currentMember["sMotherStatus"]){
+                                    motherLifeStatusArray[i].checked = true
+                                }
+                                updateStatusGenderSelectList(motherSelect, motherLifeStatusArray[i], allMales, allFemales, motherGenderArray)
+                            }
+                        }
+                        else {
                             for(let i = 0; i < motherLifeStatusArray.length; i++) {
                                 updateStatusGenderSelectList(motherSelect, motherLifeStatusArray[i], allMales, allFemales, motherGenderArray)
                             } 
@@ -127,7 +272,7 @@ var currentMember = null;
                         fatherSelect.innerHTML = "";
                         let fatherGenderArray = document.getElementsByName(`radio_sexe_father`);
                         let fatherLifeStatusArray = document.getElementsByName(`radio_status_father`);
-                        if (currentMember["father"]["id"]) {
+                        if (currentMember["father"]["id"] && !currentMember["isIncomingSpouse"]) {
                             document.getElementById('noParentCheck').checked = false;
                             document.getElementById('checkbox-father').checked = true;                            
                             for(let i = 0; i < fatherLifeStatusArray.length; i++) {
@@ -146,11 +291,29 @@ var currentMember = null;
                                 }
                             }                            
                         }
+                        // Spouse Father ///////////////////////////////
+                        else if (currentMember["isIncomingSpouse"] && currentMember["sFatherName"]) {
+                            document.getElementById(`parent_male_select`).classList.toggle('displayNone');
+                            document.getElementById(`new_parent_male_input`).setAttribute('type', 'text');
+                            document.getElementById('noParentCheck').checked = false;
+                            document.getElementById('checkbox-father').checked = true;                            
+                            document.getElementById(`new_parent_male_input`).value = currentMember["sFatherName"];
+                            for(let i = 0; i < fatherLifeStatusArray.length; i++) {
+                                if(fatherLifeStatusArray[i].value == currentMember["sFatherStatus"]){
+                                    fatherLifeStatusArray[i].checked = true
+                                }
+                                updateStatusGenderSelectList(fatherSelect, fatherLifeStatusArray[i], allMales, allFemales, fatherGenderArray)
+                            }
+                        }
                         else {
                             for(let i = 0; i < fatherLifeStatusArray.length; i++) {
                                 updateStatusGenderSelectList(fatherSelect, fatherLifeStatusArray[i], allMales, allFemales, fatherGenderArray)
                             }  
                         }
+                        // *******************************************************
+                        // *******************************************************
+                        
+                        // *******************************************************
                         /**
                          * CONJOINTS
                          */
@@ -205,7 +368,7 @@ var currentMember = null;
                 },
                 error: function (response) {
                     console.log(response)
-                    alert(response)
+                    // alert(response)
                 }
             })
         }
@@ -217,6 +380,8 @@ var currentMember = null;
 
         // /////////////////////////////////////////////////////////////////////////////////////
         // /////////////////////////////////////////////////////////////////////////////////////
+        var noPhoto = document.getElementById('noPhotoCheck');
+        var dropareaId = document.getElementById('dropareaId');
         var noParents = document.getElementById('noParentCheck');
         var hasMother = document.getElementById('checkbox-mother');
         var hasFather = document.getElementById('checkbox-father');
@@ -236,6 +401,10 @@ var currentMember = null;
                 hasFather.checked = false;
                 hasMother.checked = false;
             }
+        });
+        noPhoto.addEventListener('change', ()=> {
+            noPhotoCheck = noPhoto.checked;
+            dropareaId.classList.toggle('displayNone');
         });
         
         // ********************
@@ -462,7 +631,9 @@ var currentMember = null;
             /**
              * MOI
              */            
-            let myName = document.getElementById('my_name').value;            
+            let myName = document.getElementById('my_name').value;  
+                    
+            let uploaded_img = null;
             let myGenderArray = document.getElementsByName('radio_gender_moi');    
             for(let i = 0; i < myGenderArray.length; i++) {
                 if(myGenderArray[i].checked)
@@ -473,11 +644,21 @@ var currentMember = null;
                 if(myLifeStatusArray[i].checked)
                 myLifeStatusValue = myLifeStatusArray[i].value
             }
+            var fileInput = document.getElementById("real-file");
+            // alert(fileInput.files.length)
+            if(fileInput.files.length !== 0 ) {
+                uploaded_img = $('#real-file').get(0).files[0];
+                // alert(uploaded_img.name);
+                // debugger
+                // let form_data = new FormData();
+                // form_data.append("uploadedImg", uploaded_img);
+            }
+            // debugger
             /**
              * MOTHER
              */
             let motherId = document.getElementById('parent_female_select').value;
-            let newMotherCheck = document.getElementById('new_parent_female_check').checked;         
+            let newMotherCheck = document.getElementById('new_parent_female_check')?.checked;         
             let newMotherName = document.getElementById('new_parent_female_input').value;
             let hasMotherCheck = document.getElementById('checkbox-mother').checked;
             let motherLifeStatusArray = document.getElementsByName('radio_status_mother');    
@@ -489,7 +670,7 @@ var currentMember = null;
              * FATHER
              */
             let fatherId = document.getElementById('parent_male_select').value;
-            let newFatherCheck = document.getElementById('new_parent_male_check').checked;         
+            let newFatherCheck = document.getElementById('new_parent_male_check')?.checked;         
             let newFatherName = document.getElementById('new_parent_male_input').value;
             let hasFatherCheck = document.getElementById('checkbox-father').checked;
             let fatherLifeStatusArray = document.getElementsByName('radio_status_father');    
@@ -515,7 +696,8 @@ var currentMember = null;
                 }
                 allConjoints[i]["conjointId"] = document.getElementById(`conjoint_select_${cindex}`).value;
                 // allConjoints[i]["conjointRank"] = document.getElementById(`conjoint_rank_${cindex}`).value;
-                allConjoints[i]["newConjointCheck"] = document.getElementById(`new_conjoint_check_${cindex}`).checked;         
+                // allConjoints[i]["newConjointCheck"] = document.getElementById(`new_conjoint_check_${cindex}`)?.checked;         
+                allConjoints[i]["newConjointCheck"] = false;
                 allConjoints[i]["newConjointName"] = document.getElementById(`new_conjoint_input_${cindex}`).value;                
             }
             // console.log(allConjoints[0]);
@@ -574,9 +756,15 @@ var currentMember = null;
 
             let form_data = new FormData();
             form_data.append("currentMemberId", currentMemberId);
+            form_data.append("urlLastButOneItem", urlLastButOneItem);
             form_data.append("myName", myName);
             form_data.append("myGender", myGenderValue);
             form_data.append("myLifeStatus", myLifeStatusValue);
+            form_data.append("isIncomingSpouse", isIncomingSpouse);
+            form_data.append("noPhotoCheck", noPhotoCheck);
+            form_data.append("uploadedPhoto", uploaded_img);
+            form_data.append("uploadedPhotoName", uploaded_img?.name);
+
 
             form_data.append("fatherId", parseInt(fatherId));
             form_data.append("newFatherCheck", newFatherCheck);
@@ -588,7 +776,7 @@ var currentMember = null;
             form_data.append("newMotherCheck", newMotherCheck);
             form_data.append("newMotherName", newMotherName);            
             form_data.append("hasMotherCheck", hasMotherCheck);
-            form_data.append("motherLifeStatusValue", fatherLifeStatusValue);
+            form_data.append("motherLifeStatusValue", motherLifeStatusValue);
 
             form_data.append("spouseValues", JSON.stringify(allConjoints));
             // form_data.append("childValues", allConjoints);
@@ -629,7 +817,7 @@ var currentMember = null;
                 contentType: false,
                 processData: false,
                 success: function (response) {
-                    console.log("Well done !!");
+                    // console.log("Well done !!");
 
                     var reloadLink = document.createElement('a');
                     reloadLink.href = '/family_list';
@@ -918,17 +1106,21 @@ function addSpouse() {
                 <span>Mort(e)</span>
             </label>
         </div>
+        <!-- 
         <i class="indication-note"><small>(Sélectionnez son nom dans la liste déroulante OU cliquez sur "Ajouter un nom" si son nom n'est pas dans la liste)</small></i>                        
+        -->
         <div class="form_input_container">
             <select id="conjoint_select_${nbConjoints}">
                 <option value="0">Guemthueng Marie</option>
                 <option value="1">KENMEUGNE Chantal</option>                                
             </select>
             <input type="hidden" name="new_conjoint_input_${nbConjoints}" id="new_conjoint_input_${nbConjoints}" placeholder="Nom du conjoint ...">                            
+            <!-- 
             <label class="new_income_category" for="new_conjoint_check_${nbConjoints}">
                 <input type="checkbox" name="" id="new_conjoint_check_${nbConjoints}" onchange="handleNewCheck(this, 'conjoint', ${nbConjoints})">
                 <span id="new_conjoint_span_${nbConjoints}">+ Ajouter un nom</span>            
             </label>
+            -->
         </div>
         <!--
         <div class="form_input_container">

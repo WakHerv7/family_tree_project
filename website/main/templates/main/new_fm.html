@@ -5,12 +5,13 @@
 
 {% block css_styles %}
 <link rel="stylesheet" href="{% static '/css/family_tree/style_new_member.css' %}">
+<link rel="stylesheet" href="{% static '/css/family_tree/style_upload_area.css' %}">
 {% endblock %}
 
 {% block content %}
 <div class="super_container_wh">
     <div class="back_button_container">
-        <a class="back_button" href="/family_list">Retour</a>
+        <a class="back_button" href="/family_list">Retour vers la liste</a>
     </div>
     <div class="form_container_wh mb-5">
         <h2 id="form_title">Nouveau membre de famille</h2>
@@ -19,8 +20,8 @@
             <div class="form_section">
                 <div class="form_section_title">
                     <span class="">Moi</span>
-                </div>                
-                
+                </div>
+
                 <div class="form_radio_container">
                     <div class="radio_group_title">Sexe : </div>
                     <label class="radio_item_container">                        
@@ -55,10 +56,42 @@
                 <div class="form_input_container">
                     <input type="text" name="my_name" id="my_name" placeholder="Mon nom complet ...">
                 </div>
+
+                <!-- DRAG AND DROP AREA START -->
+                <form class="converter-box" id="convertFormId">
+                    <div class="upload-top" style="display: flex; align-items: center; gap: 150px; margin-bottom: 10px; margin-top: 10px;">
+                        <!-- <p>Photo : </p> -->
+                        <div class="radio_group_title">Photo : </div>
+                        <label class="checkbox_item_container">
+                            <input type="checkbox" id="noPhotoCheck">
+                            <span class="checkbox_checkmark"></span>
+                            <span style="font-size: 14px;">Pas de photo</span>
+                        </label>
+                    </div>
+    
+                    <div class="droparea" id="dropareaId">
+                        <div class="droparea_screen"></div>
+                        <!-- <div class="image">
+                            <img src="{% static 'img/converter/Icon24x24.png' %}" alt="">
+                        </div> -->
+                        <div class="drag">
+                            <!-- <p>Cliquez pour insérer une photo</p> -->
+                            <!-- <p>Or</p> -->
+                            <a href="#">Cliquez ici pour insérer une photo</a>
+                        </div>
+                        <div id="dropzone" class="dropzone"></div>
+                        
+                    </div>
+                    <input type="file" class="droparea__input" id="real-file" hidden="hidden" accept="image/png, image/jpeg">
+                    
+                </form>
+                <!-- DRAG AND DROP AREA END -->
+                
+
             </div>
 
 
-            <div class="form_section">
+            <div class="form_section" id="parents_form_section">
                 <div class="form_section_title">
                     <span class="">Mes parents</span>
                     <label class="checkbox_item_container">
@@ -89,17 +122,17 @@
                             </label>
                         </div>
                         
-                        <i class="indication-note"><small>(Sélectionnez son nom dans la liste déroulante OU cliquez sur "Ajouter un nom" si son nom n'est pas dans la liste)</small></i>                        
+                        <!-- <i class="indication-note"><small>(Sélection nez son nom dans la liste déroulante OU cliquez sur "Ajouter un nom" si son nom n'est pas dans la liste)</small></i>                         -->
                         <div class="form_input_container">
                             <select id="parent_female_select">
                                 <option value="0">Guemthueng Marie</option>
                                 <option value="1">KENMEUGNE Chantal</option>                                
                             </select>
                             <input type="hidden" name="my_name" id="new_parent_female_input" placeholder="Nom de ma maman ...">                            
-                            <label class="new_income_category" for="new_parent_female_check">
+                            <!-- <label class="new_income_category" for="new_parent_female_check">
                                 <input type="checkbox" name="" id="new_parent_female_check">
                                 <span id="new_parent_female_span">+ Ajouter un nom</span>            
-                            </label>
+                            </label> -->
                         </div>
                         
                     </div>
@@ -125,17 +158,17 @@
                                 <span>Mort</span>
                             </label>
                         </div>
-                        <i class="indication-note"><small>(Sélectionnez son nom dans la liste déroulante OU cliquez sur "Ajouter un nom" si son nom n'est pas dans la liste)</small></i>                   
+                        <!-- <i class="indication-note"><small>(Sélectionnez son nom dans la liste déroulante OU cliquez sur "Ajouter un nom" si son nom n'est pas dans la liste)</small></i>                    -->
                         <div class="form_input_container">
                             <select id="parent_male_select">
                                 <option value="0">Teku WAKAM Jean Marie</option>
                                 <option value="1">TADJUIDJE KAMDEM Fidele</option>                                
                             </select>
                             <input type="hidden" name="my_name" id="new_parent_male_input" placeholder="Nom de mon papa ...">                            
-                            <label class="new_income_category" for="new_parent_male_check">
+                            <!-- <label class="new_income_category" for="new_parent_male_check">
                                 <input type="checkbox" name="" id="new_parent_male_check">
                                 <span id="new_parent_female_span">+ Ajouter un nom</span>            
-                            </label>
+                            </label> -->
                         </div>
                         
                     </div>
@@ -297,6 +330,6 @@
 {% endblock %}
 
 {% block js_scripts %}
-    <!-- <script src="{% static 'js/family_tree/app.js' %}" defer></script>  -->
+    <script src="{% static 'js/family_tree/img_upload_area.js' %}" defer></script> 
     <script src="{% static 'js/family_tree/family_tree_form.js' %}" defer></script>
 {% endblock %}

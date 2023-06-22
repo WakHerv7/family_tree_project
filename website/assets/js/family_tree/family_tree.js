@@ -64,7 +64,7 @@ function openBallMenu(ballDomId) {
     oneBall.setAttribute('onclick', `openBallMenu("${ballDomId}")`);
 }
 
-function createBallSvgInnerText(id, myname, x, y) {
+function createBallSvgInnerText(id, myname, myphoto=null, isIncomingSpouse, x, y) {
     const svgCircleTexts = document.querySelector('#mysvg #manyCircleTexts');
 
     // const path0 = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -86,9 +86,21 @@ function createBallSvgInnerText(id, myname, x, y) {
     circleTextTop0.setAttribute('width', 50);
     circleTextTop0.setAttribute('height', 50);
     const div0 = document.createElement("div");
-    div0.innerHTML = getFirst2Initials(myname);
-    div0.setAttribute('onclick',`openBallMenu("oneBallMenu${id}")`)
-    div0.setAttribute('style','color: white; width:100%; height:100%; background:transparent; text-align:center; font-size:22px; font-weight:bold; user-select: none; display: flex; align-items:center; justify-content:center;')
+    if (myphoto) {
+        circleTextTop0.setAttribute('x', x-45);
+        circleTextTop0.setAttribute('y', y-45);
+        circleTextTop0.setAttribute('width', 90);
+        circleTextTop0.setAttribute('height', 90);
+        div0.setAttribute('onclick',`openBallMenu("oneBallMenu${id}")`)
+        div0.setAttribute('style','color: white; width:100%; height:100%; background-image:url("'+myphoto+'"); background-size:cover; background-position: center center; border-radius:50%; border: 2px solid white; text-align:center; font-size:22px; font-weight:bold; user-select: none; display: flex; align-items:center; justify-content:center;')
+
+
+    } else {        
+        div0.innerHTML = getFirst2Initials(myname);
+        div0.setAttribute('onclick',`openBallMenu("oneBallMenu${id}")`)
+        div0.setAttribute('style','color: white; width:100%; height:100%; background:transparent; border-radius:50%; text-align:center; font-size:22px; font-weight:bold; user-select: none; display: flex; align-items:center; justify-content:center;')    
+    }
+    
     circleTextTop0.appendChild(div0);
     svgCircleTexts.append(circleTextTop0);
 
@@ -99,19 +111,33 @@ function createBallSvgInnerText(id, myname, x, y) {
     circleTextTop1.setAttribute('id', `oneBallMenu${id}`);
     circleTextTop1.setAttribute('x', x-1080);
     circleTextTop1.setAttribute('y', `${y-1200}`);
+    if (isIncomingSpouse) {
+        circleTextTop1.setAttribute('x', x-1038);
+        circleTextTop1.setAttribute('y', `${y-1140}`);
+    }
     // circleTextTop1.setAttribute('width', 200);
     // circleTextTop1.setAttribute('height', 135);
     circleTextTop1.setAttribute('width', `${2000}`);
     circleTextTop1.setAttribute('height', `${2000}`);
     const div1 = document.createElement("div");
-    div1.innerHTML = `
-    <ul>
-        <li><a href="show_item/${id}">Voir</a></li>
-        <li><a href="update_item/${id}">Modifier</a></li>
-        <li><a href="#">Ajouter un conjoint</a></li>
-        <li><a href="#">Ajouter un enfant</a></li>
-    </ul>
-    `;
+    if (isIncomingSpouse) {
+        div1.innerHTML = `
+        <ul>
+            <li><a href="show_item/${id}">Voir</a></li>
+            <li><a href="update_item/${id}">Modifier</a></li>
+        </ul>
+        `;
+    } else {
+        div1.innerHTML = `
+        <ul>
+            <li><a href="show_item/${id}">Voir</a></li>
+            <li><a href="update_item/${id}">Modifier</a></li>
+            <li><a href="new_spouse/${id}">Ajouter un conjoint</a></li>
+            <li><a href="new_child/${id}">Ajouter un enfant</a></li>
+        </ul>
+        `;
+    }
+    
     div1.setAttribute('class','fm_menu ')
     div1.setAttribute('onclick',`console.log("oneBallMenu${id}")`)
     circleTextTop1.appendChild(div1);
@@ -654,7 +680,7 @@ function initializeSvgZone(viewboxWidth, viewboxHeight) {
                             }
                             if (fm) {
                                 createBallSvgCircle(fmCoord[i]["id"], fmCoord[i]["x"]+padding_h, fmCoord[i]["y"]+padding_v)
-                                createBallSvgInnerText(fmCoord[i]["id"], fm["name"], fmCoord[i]["x"]+padding_h, fmCoord[i]["y"]+padding_v)                            
+                                createBallSvgInnerText(fmCoord[i]["id"], fm["name"], fm["photo"], fm["isIncomingSpouse"], fmCoord[i]["x"]+padding_h, fmCoord[i]["y"]+padding_v)                            
                                 createBallSvgLowerText(fmCoord[i]["id"], fm["name"], fmCoord[i]["x"]+padding_h, fmCoord[i]["y"]+padding_v)
                             }
                         }
