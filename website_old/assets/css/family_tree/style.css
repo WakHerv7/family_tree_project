@@ -1,0 +1,134 @@
+.displayNone {
+    display: none !important;
+}
+
+.container_wh {
+    position: fixed;
+    width: 100% !important;
+    height: 100vh;
+    left: 0 !important;
+    /* top: 0 !important; */
+    padding: 0 !important;
+    margin: 0 !important;
+    z-index: 3;
+    max-width: 100vw;
+}
+
+.fm_menu {
+    position: absolute;
+    top: 1000px;
+    left: 1000px;    
+    background: white;
+    border-radius: 5px;
+    padding: 10px;
+}
+.fm_menu ul {
+    list-style: none;
+    padding-left: 0 !important;
+    margin: 0 !important;
+}
+.fm_menu ul li {
+    border-bottom: 1px solid #ccc;
+    padding: 3px 0;
+
+}
+.fm_menu ul li:last-child {
+    border-bottom: none;
+}
+.fm_menu ul li a {
+    user-select: none !important;
+}
+
+.bg_screen0 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #00000090;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+.modalScreenDiv {
+    background: #00000090;
+    width: 100%;
+    height: 100%;
+}
+
+
+.form-group,
+.input_container {
+    position: relative;
+    width: fit-content !important;
+}
+.form-group {
+    display: flex;
+    gap: 15px;
+}
+.live_options_wh {
+    /* display: none; */
+    position: absolute;
+    left: 0;
+    top: 101%;
+    /* min-height: 30px; */
+    min-width: 300px;
+    height: fit-content;
+    /* width: fit-content; */
+    background: #eee;
+    z-index: 1000;
+    list-style: none;
+}
+.live_options_wh li:hover {
+    color: cornflowerblue;
+    cursor: pointer;
+}
+
+/* /////////// */
+.new_income_category input {
+    display: none;
+}
+.new_income_category span {
+    color: cornflowerblue;
+}
+.new_income_category input:checked ~ span {
+    color: darkslateblue;
+}
+
+
+
+/* //////////////////////////////////////////////////////////////// */
+.modal_container {
+    position: fixed;
+    background: #0000009f;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modal_content {
+    background: white;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 15px;
+    height: 180px;
+    width: 350px;
+    text-align: center;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+

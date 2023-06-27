@@ -1,0 +1,72 @@
+
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Family Tree{% endblock %}
+
+{% block css_styles %}
+<link rel="stylesheet" href="{% static '/css/family_tree/style.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container_wh">
+    <h1 
+        style="position: absolute; margin-left: 25px; color:transparent; user-select: none; -webkit-text-stroke-width: 1px; -webkit-text-stroke-color: rgba(255, 255, 255, 0.436);">
+        Family tree
+    </h1>
+    <!-- <div class="fm_menu">
+        <ul>
+            <li><a href="#">Modifier</a></li>
+            <li><a href="#">Ajouter un conjoint</a></li>
+            <li><a href="#">Ajouter un enfant</a></li>
+        </ul>
+    </div> -->
+    <div id="mysvgcontainer" style="background-image: linear-gradient(rgb(12, 0, 66), rgb(0, 53, 18));">
+        <!-- <div id="bg_screen0" class="bg_screen0 displayNone"></div> -->
+        <svg  id="mysvg" width="100%" height="100vh" style="overflow-x:scroll; overflow-y:scroll;" >
+
+            <!-- <defs>
+                <linearGradient id="g2" x1="-50%" x2="100%" y1="0%" y2="-30%">
+                    <stop style="stop-color: rgb(12, 0, 66);" offset="0" />
+                    <stop style="stop-color: rgb(0, 53, 18);" offset="1" />
+                </linearGradient>
+            </defs>
+            <rect style="fill: url(#g2);" stroke="green" stroke-width="10" height="100%" width="100%" y="1" x="1" /> -->
+            
+            <g id="manyCouples"></g>
+            <g id="manyLines"></g>
+            <g id="manyCircles"></g>
+            <foreignObject id="modalScreen" x="0" y="0" width="100%" height="100%">
+                <div id="modalScreenDiv" class="modalScreenDiv displayNone">
+                </div>
+            </foreignObject>
+            <g id="manyCircleTexts"></g>
+            <g id="manyCircleTextsBottom"></g>
+            <g id="manyMenus"></g>
+        
+            <!-- <g stroke="black" stroke-width="3" fill="yellow">
+                <circle id="pointA" cx="318" cy="345" r="5" />
+                <circle id="pointB" cx="330" cy="345" r="5" />
+            </g>
+            <g stroke="red" stroke-width="3" fill="lightblue">
+                <circle id="pointC" cx="450" cy="345" r="5" />
+            </g>
+            <g stroke="green" stroke-width="3" fill="coral">
+                <circle id="pointD" cx="380" cy="124" r="5" />
+            </g>
+            <g stroke="black" stroke-width="3" fill="yellow">
+                <circle id="pointE" cx="504" cy="124" r="5" />
+                <circle id="pointF" cx="519" cy="124" r="5" />
+            </g> -->
+        
+        </svg>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block js_scripts %}
+    <script src="{% static 'js/family_tree/family_tree.js' %}" defer></script>
+{% endblock %}

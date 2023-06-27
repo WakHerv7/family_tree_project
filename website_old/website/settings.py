@@ -31,7 +31,6 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,7 +42,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -119,22 +117,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-#STATIC_URL = '/home/familyz/family_tree_project/website/static/'
-STATIC_ROOT = os.path.join(BASE_DIR,'assets')
 STATICFILES_DIRS= [
     # START:for_download_tuto
     # os.path.join(BASE_DIR,'static'),
     # END:for_download_tuto
-    os.path.join(BASE_DIR,'assets')
-#    '/home/familyz/family_tree_project/website/static/'
-]
-STATICFILES_STORAGE= 'whitenoise.storage.CompressedStaticFilesStorage'
+    os.path.join(BASE_DIR,'assets')]
+
 
 
 # START:for_download_tuto
-MEDIA_URL = "/home/familyz/family_tree_project/website/media_cdn/photos/"
-MEDIA_ROOT = "/home/familyz/family_tree_project/website/media_cdn/photos/"
-#MEDIA_ROOT = os.path.join(BASE_DIR,'media_cdn')
+MEDIA_URL = "/photos/"
+MEDIA_ROOT = os.path.join(BASE_DIR,'media_cdn')
 # END:for_download_tuto
 
 # Default primary key field type

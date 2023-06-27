@@ -15,7 +15,6 @@ urlpatterns = [
     path('show_item/<int:pk>', views.showItem, name = 'showItem'),
     path('update_item/<int:pk>', views.updateItem, name = 'updateItem'),
     path('delete_item/<int:pk>', views.deleteItem, name = 'deleteItem'),
-    path('delete_all_items', views.deleteAllItems, name = 'deleteAllItems'),
 
     path('new_child/<int:pk>', views.newChild, name = 'newChild'),
     path('new_spouse/<int:pk>', views.newSpouse, name = 'newSpouse'),

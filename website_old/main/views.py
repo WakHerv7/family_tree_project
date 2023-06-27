@@ -31,11 +31,6 @@ def download(request, path):
     raise Http404
 # END:for_download_tuto
 
-def deleteAllItems(request):
-    for indiv in Individu.objects.all(): 
-        indiv.delete()
-    return redirect('family_list')
-
 def sign_up(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
@@ -305,7 +300,7 @@ def NewFamilyMember(request, document_root):
             )
             indiv.save() 
             fatherId = indiv.id
-        elif hasFatherCheck == 'false' and newFatherCheck != 'true':
+        else:
             fatherId = None
 
         if hasMotherCheck == 'false':
@@ -320,7 +315,7 @@ def NewFamilyMember(request, document_root):
             )
             indiv.save() 
             motherId = indiv.id
-        elif hasMotherCheck == 'false' and newMotherCheck != 'true' :
+        else:
             motherId = None
 
         my_lv = lifeValue(myLifeStatus)

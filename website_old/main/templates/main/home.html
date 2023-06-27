@@ -1,0 +1,107 @@
+
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block css_styles %}
+<link rel="stylesheet" href="{% static '/css/family_tree/style.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<h1>Family tree</h1>
+<br>
+<table class="table-striped table-bordered">
+    <thead>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Pere </th>        
+        <th>Mere</th>        
+        <th>Conjoint(s)</th> 
+        <th>Generation</th>           
+    </thead>
+    {% if len_family > 0 %}
+    <tbody>       
+        {% for item in family %}
+        <tr>
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.father}}</td>
+            <td>{{item.mother}}</td>
+            <td>{{item.spouses}}</td>
+            <td>{{item.generation}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    {% else %}
+    <span>No income</span>
+    {% endif %}
+</table>
+<br>
+<br>
+<br>
+<br>
+<form class="mb-5" action="" method="POST">
+    {% csrf_token %}
+    <h2 class="signin_sentence">New family member</h2>
+    
+    <div class="form-group">
+        <label for="">Name</label>
+        <div class="input_container">
+            {{form.name}}
+            <!-- <ul id="customerOptions" class="live_options_wh"></ul> -->
+        </div>        
+    </div>
+    <div class="form-group">
+        <label for="">Gender</label>
+        {{form.gender}}
+    </div>
+    
+    <div class="form-group">
+        <label for="">Father</label>
+        {{form.parent_male}}
+        <input type="hidden" name="" id="new_parent_male_input">
+        <label class="new_income_category" for="new_parent_male_check">
+            <input type="checkbox" name="" id="new_parent_male_check">
+            <span id="new_parent_male_span">New Father</span>            
+        </label>
+        <label class="new_income_category" for="no_parent_male_check">
+            <input type="checkbox" name="" id="no_parent_male_check">
+            <span id="no_parent_male_span">No Father</span>            
+        </label>
+    </div>
+    <div class="form-group">
+        <label for="">Mother</label>
+        {{form.parent_female}}
+        <input type="hidden" name="" id="new_parent_female_input">
+        <label class="new_income_category" for="new_parent_female_check">
+            <input type="checkbox" name="" id="new_parent_female_check">
+            <span id="new_parent_female_span">New Mother</span>            
+        </label>
+        <label class="new_income_category" for="no_parent_female_check">
+            <input type="checkbox" name="" id="no_parent_female_check">
+            <span id="no_parent_female_span">No Mother</span>            
+        </label>
+    </div>
+    <div class="form-group">
+        <label for="">Generation level (optional)</label>
+        {{form.generation_level}}
+    </div>
+    <div class="form-group">
+        <label for="">Birth rank (optional)</label>
+        {{form.birth_rank}}
+    </div>
+    <div class="form-group">
+        <label for="">Spouses</label>
+        {{form.spouse}}
+    </div>
+    
+    <button class="btn btn-primary" type="submit" id="create_income_btn">Create</button>
+</form>
+
+
+{% endblock %}
+
+{% block js_scripts %}
+    <script src="{% static 'js/family_tree/app.js' %}" defer></script>
+{% endblock %}

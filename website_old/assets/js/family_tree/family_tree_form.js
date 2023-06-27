@@ -13,12 +13,6 @@ var allMales = {
     "youngdead": [
     ]
 };
-allMales = {   
-    "all":[],
-    "alive": [],
-    "dead": [],
-    "youngdead": []
-  };
 var allFemales = {
     "all":[
         {'id':0, 'name': 'Guemthueng Marie'},
@@ -35,12 +29,6 @@ var allFemales = {
     "youngdead": [
     ]
 };
-allFemales = {
-       "all":[],
-       "alive": [],
-       "dead": [],
-       "youngdead": []
-     };
 
 var allConjoints = [];
 var nbConjoints = 0;
@@ -765,9 +753,6 @@ var isIncomingSpouse = false;
             //     spouse_values.push(spouses[i].value)
             // }
             
-            console.log("newFatherCheck : ",newFatherCheck)
-            console.log("fatherId : ",fatherId)
-            console.log("hasFatherCheck : ",hasFatherCheck)
 
             let form_data = new FormData();
             form_data.append("currentMemberId", currentMemberId);

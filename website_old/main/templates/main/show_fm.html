@@ -1,0 +1,191 @@
+
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}{{myName}}{% endblock %}
+
+{% block css_styles %}
+<link rel="stylesheet" href="{% static '/css/family_tree/style_new_member.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="super_container_wh">
+    <div class="back_button_container">
+        <a class="back_button" href="{% url 'updateItem' myID %}">Modifier</a>
+        <a class="back_button" href="/family_list">Retour vers la liste</a>
+    </div>
+    <div class="form_container_wh mb-5">
+        <span class="photo_container_wh">
+            {% if myPhoto %}
+            <img src="{{myPhoto}}" alt="">
+            {% else %}
+            <span class="myInitials">{{myInitials}}</span>
+            {% endif %}
+        </span>
+        <h2 id="form_title">{{myName}}</h2>
+        <form class="mb-5" action="" method="POST">
+            {% csrf_token %}
+            <div class="form_section">
+                <div class="form_section_title">
+                    <span class="">Moi</span>
+                </div>
+                <div class="form_radio_container">
+                    <!-- <div class="radio_group_title">Photo : </div> -->
+                    
+                </div>
+                <div class="form_radio_container">
+                    <div class="radio_group_title">Nom : </div>
+                    <span>{{myName}}</span>
+                </div> 
+                <div class="form_radio_container">
+                    <div class="radio_group_title">Sexe : </div>
+                    <span>{{myGender}}</span>
+                </div>                
+                <div class="form_radio_container">
+                    <div class="radio_group_title">Statut : </div>
+                    <span>{{myLifeStatus}}</span>
+                </div>
+                <div class="form_radio_container">
+                    <div class="radio_group_title">Date et lieu de naissance : </div>
+                    {% if birthdate != '' and birthplace != '' %}
+                    <span>{{birthdate}}&nbsp;à&nbsp;{{birthplace}}</span>
+                    {% else %}
+                    <span></span>
+                    {% endif %}
+                </div>
+                <div class="form_radio_container">
+                    <div class="radio_group_title">Rang de naissance : </div>
+                    <span>{{birthrank}}</span>
+                </div>                
+                <div class="form_radio_container">
+                    <div class="radio_group_title">Email : </div>
+                    <span>{{email}}</span>
+                </div>
+                <div class="form_radio_container">
+                    <div class="radio_group_title">Telephone : </div>
+                    <span>{{telephone}}</span>
+                </div>
+                <div class="form_radio_container">
+                    <div class="radio_group_title">Profession : </div>
+                    <span>{{profession}}</span>
+                </div>
+                <div class="form_radio_container">
+                    <div class="radio_group_title">Pays : </div>
+                    <span>{{country}}</span>
+                </div>
+                <div class="form_radio_container">
+                    <div class="radio_group_title">Ville : </div>
+                    <span>{{city}}</span>
+                </div>
+                <div class="form_radio_container">
+                    <div class="radio_group_title">Linkedin : </div>
+                    <a href="{{linkedin}}">{{linkedin}}</a>
+                </div>
+                <div class="form_radio_container">
+                    <div class="radio_group_title">Twitter : </div>
+                    <a href="{{twitter}}">{{twitter}}</a>
+                </div>
+                <div class="form_radio_container">
+                    <div class="radio_group_title">Facebook : </div>
+                    <a href="{{facebook}}">{{facebook}}</a>
+                </div>
+                <div class="form_radio_container">
+                    <div class="radio_group_title">Instagram : </div>
+                    <a href="{{instagram}}">{{instagram}}</a>
+                </div>
+                <div class="form_radio_container">
+                    <div class="radio_group_title">A propos de moi : </div>
+                    <span>{{aboutme}}</span>
+                </div>
+            </div>
+
+
+            <div class="form_section">
+                <div class="form_section_title">
+                    <span class="">Mes parents</span>                    
+                </div>
+                {% if father.id == None and mother.id == None %}
+                <span>Aucun</span>
+                {% else %}
+                <div class="composed-checkbox-container">                    
+                    <div>
+                        <label for="checkbox-mother" class="sub_title">Ma maman</label>
+                        {% if mother.id == None %}
+                        <span>Aucune</span>
+                        {% else %}
+                        <div class="form_radio_container">
+                            <div class="radio_group_title">Nom : </div>
+                            <span>{{mother.name}}</span>
+                        </div>              
+                        <div class="form_radio_container">
+                            <div class="radio_group_title">Statut : </div>
+                            <span>{{mother.status}}</span>
+                        </div>   
+                        {% endif %}
+                                             
+                    </div>
+                </div>
+                <div class="composed-checkbox-container">                    
+                    <div>
+                        <label for="checkbox-mother" class="sub_title">Mon papa</label>
+                        {% if father.id == None %}
+                        <span>Aucun</span>
+                        {% else %}
+                        <div class="form_radio_container">
+                            <div class="radio_group_title">Nom : </div>
+                            <span>{{father.name}}</span>
+                        </div>              
+                        <div class="form_radio_container">
+                            <div class="radio_group_title">Statut : </div>
+                            <span>{{father.status}}</span>
+                        </div>   
+                        {% endif %}
+                                             
+                    </div>
+                </div>
+                {% endif %}                
+            </div>
+            
+
+            <div class="form_section">
+                <div class="form_section_title">
+                    <span class="">Mon/Mes conjoint(s)</span>
+                </div>
+                <div class="all_conjoints" id="all_conjoints"></div>
+                {% if len_spouses > 0 %}
+                    {% for item in spouses %}
+                    <div class="composed-checkbox-container">                    
+                        <div>
+                            <label for="checkbox-mother" class="sub_title">Conjoint</label>                            
+                            <div class="form_radio_container">
+                                <div class="radio_group_title">Nom : </div>
+                                <span>{{item.name}}</span>
+                            </div>
+                            <div class="form_radio_container">
+                                <div class="radio_group_title">Sexe : </div>
+                                <span>{{item.gender}}</span>
+                            </div>               
+                            <div class="form_radio_container">
+                                <div class="radio_group_title">Statut : </div>
+                                <span>{{item.status}}</span>
+                            </div>                                                 
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <span>Aucun</span>
+                {% endif %}
+                </div>
+                
+            </div>
+            
+        </form>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block js_scripts %}
+    <!-- <script src="{% static 'js/family_tree/app.js' %}" defer></script>  -->
+    <!-- <script src="{% static 'js/family_tree/family_tree_form.js' %}" defer></script> -->
+{% endblock %}
