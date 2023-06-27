@@ -256,6 +256,19 @@ function getCoupleByFMIds(Tab, id1, id2) {
     }
     return false
 }
+function removeDuplicates(table) {
+    // console.log(table['fm']);
+    const seen = new Set();
+    let newTable = table.filter(obj => {
+      if (seen.has(obj.id)) {
+        return false;
+      }
+      seen.add(obj.id);
+      return true;
+    });
+
+    return newTable
+  }
 
 
 // ////////////////////////////////////////////////////////////////////////////////////
@@ -371,8 +384,14 @@ function initializeSvgZone(viewboxWidth, viewboxHeight) {
                                     let parentHasChildren = false;
                                     for (let p = 0; p < familyGenerations[i].length; p++) {
                                         let myParentIds = getFMParentIds(family, familyGenerations[i][p]);
-                                        if ((parentTab["fm"][k]["id"] == myParentIds["mother"] && myParentIds["mother"] != null) || (parentTab["fm"][k]["id"] == myParentIds["father"] && myParentIds["father"] != null)) {
-                                            reorganizedGen["fm"].push({"id":familyGenerations[i][p], "children":0, "allChildren":0, "parentId": parentTab["fm"][k]["id"]})
+                                        if ((parentTab["fm"][k]["id"] == myParentIds["mother"] && myParentIds["mother"] != null) || 
+                                        (parentTab["fm"][k]["id"] == myParentIds["father"] && myParentIds["father"] != null)) {
+                                            reorganizedGen["fm"].push({
+                                                "id":familyGenerations[i][p], 
+                                                "children":0, 
+                                                "allChildren":0, 
+                                                "parentId": parentTab["fm"][k]["id"]
+                                            });
                                             // parentTab["fm"][k]["children"]++
                                             parentTabAllGen[i-1]["fm"][k]["children"]++;
                                             parentTabAllGen[i-1]["fm"][k]["allChildren"]++;
@@ -380,7 +399,12 @@ function initializeSvgZone(viewboxWidth, viewboxHeight) {
                                         }                                        
                                     }
                                     if (parentHasChildren == false) {
-                                        reorganizedGen["fm"].push({"id":null, "children":0, "allChildren":0, "parentId": parentTab["fm"][k]["id"]})
+                                        reorganizedGen["fm"].push({
+                                            "id":null, 
+                                            "children":0, 
+                                            "allChildren":0, 
+                                            "parentId": parentTab["fm"][k]["id"]
+                                        });
                                     }
                                 }
                                 for (let k = 0; k < familyGenerations[i].length; k++) {
@@ -391,11 +415,16 @@ function initializeSvgZone(viewboxWidth, viewboxHeight) {
                                         }
                                     }
                                     if (flag == false) {
-                                        reorganizedGen["fmsp"].push({"id":familyGenerations[i][k], "children":0, "allChildren":0, "parentId": null});
+                                        reorganizedGen["fmsp"].push({
+                                            "id":familyGenerations[i][k], 
+                                            "children":0, 
+                                            "allChildren":0, 
+                                            "parentId": null
+                                        });
                                     }
                                 }
                                 // console.log(reorganizedGen);
-                                
+                                reorganizedGen['fm'] = removeDuplicates(reorganizedGen['fm'])
                                 parentTabAllGen.push(reorganizedGen);
                                 // console.log(parentTabAllGen);
                                 // for (j = 0; j < reorganizedGen.length; j++) {                                

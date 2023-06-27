@@ -125,7 +125,7 @@ STATICFILES_DIRS= [
     # START:for_download_tuto
     # os.path.join(BASE_DIR,'static'),
     # END:for_download_tuto
-    os.path.join(BASE_DIR,'assets')
+    # os.path.join(BASE_DIR,'assets')
 #    '/home/familyz/family_tree_project/website/static/'
 ]
 STATICFILES_STORAGE= 'whitenoise.storage.CompressedStaticFilesStorage'

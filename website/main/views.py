@@ -537,8 +537,9 @@ def FamilyData(request):
 
         # print("income list loop ongoing !!")
         FAMILY.append(indivItem)
-
-
+    
+    # Remove duplicates
+    GENERATION_0 = list(dict.fromkeys(GENERATION_0))
     FAMILY_GENERATIONS.append(GENERATION_0)
 
     unsolved_generations = False
