@@ -1,46 +1,15 @@
-var allMales = {
-    
-    "all":[
-        {'id':0, 'name': 'Teku WAKAM Jean Marie'},
-        {'id':1, 'name': 'TADJUIDJE KAMDEM Fidele'},
-    ],
-    "alive": [
-        {'id':1, 'name': 'TADJUIDJE KAMDEM Fidele'},
-    ],
-    "dead": [
-        {'id':0, 'name': 'Teku WAKAM Jean Marie'},
-    ],
-    "youngdead": [
-    ]
-};
-allMales = {   
+var allMales = {   
     "all":[],
     "alive": [],
     "dead": [],
     "youngdead": []
   };
 var allFemales = {
-    "all":[
-        {'id':0, 'name': 'Guemthueng Marie'},
-        {'id':1, 'name': 'KENMEUGNE Chantal'},
-        {'id':2, 'name': 'YOUEGO'},
-    ],
-    "alive": [
-        {'id':0, 'name': 'Guemthueng Marie'},
-        {'id':1, 'name': 'KENMEUGNE Chantal'},
-    ],
-    "dead": [
-        {'id':2, 'name': 'YOUEGO'},
-    ],
-    "youngdead": [
-    ]
-};
-allFemales = {
-       "all":[],
-       "alive": [],
-       "dead": [],
-       "youngdead": []
-     };
+    "all":[],
+    "alive": [],
+    "dead": [],
+    "youngdead": []
+  };
 
 var allConjoints = [];
 var nbConjoints = 0;
@@ -70,8 +39,8 @@ var isIncomingSpouse = false;
             if (urlLastButOneItem == 'update_item' && !isNaN(urlLastItem))
             {
                 currentMemberId = currentPathArray[currentPathArray.length-1];
-                document.getElementById('form_title').innerHTML = "Modifier un membre de famille"
-                document.getElementById('create_fm_btn').innerHTML = "Valider les modifications"
+                document.getElementById('form_title').innerHTML = "Edit family member"
+                document.getElementById('create_fm_btn').innerHTML = "Save"
                 
             }
             else if (urlLastButOneItem == 'new_child' && !isNaN(urlLastItem)) 
@@ -158,7 +127,7 @@ var isIncomingSpouse = false;
                     // ==================================================================
                     else if (currentMemberId !== null && urlLastButOneItem == 'new_spouse') {
                         // parents_form_section
-                        document.getElementById('form_title').innerHTML = `Nouveau conjoint pour <br> ${currentMember['myName']}`                        
+                        document.getElementById('form_title').innerHTML = `New spouse for <br> ${currentMember['myName']}`                        
                         // document.getElementById(`parents_form_section`).classList.add('displayNone');
                         document.getElementById(`parent_male_select`).classList.toggle('displayNone')
                         document.getElementById(`new_parent_male_input`).setAttribute('type', 'text')
@@ -582,12 +551,12 @@ var isIncomingSpouse = false;
             if (elm.checked) {                
                 document.getElementById(`${parentype}_select`).classList.toggle('displayNone')
                 document.getElementById(`new_${parentype}_input`).setAttribute('type', 'text')
-                document.getElementById(`new_${parentype}_span`).innerText = `Sélectionner un nom`
+                document.getElementById(`new_${parentype}_span`).innerText = `Select a name`
                 
             } else {
                 document.getElementById(`${parentype}_select`).classList.toggle('displayNone')
                 document.getElementById(`new_${parentype}_input`).setAttribute('type', 'hidden')
-                document.getElementById(`new_${parentype}_span`).innerText = `+ Ajouter un nom`
+                document.getElementById(`new_${parentype}_span`).innerText = `+ Add a name`
                 
             }
         }
@@ -862,12 +831,12 @@ function handleNewCheck(elm, name, index) {
     if (elm.checked) {                
         document.getElementById(`${name}_select_${index}`).classList.toggle('displayNone')
         document.getElementById(`new_${name}_input_${index}`).setAttribute('type', 'text')
-        document.getElementById(`new_${name}_span_${index}`).innerText = `Sélectionner un nom`
+        document.getElementById(`new_${name}_span_${index}`).innerText = `Select a name`
         // console.log(`${name} - handled`)
     } else {
         document.getElementById(`${name}_select_${index}`).classList.toggle('displayNone')
         document.getElementById(`new_${name}_input_${index}`).setAttribute('type', 'hidden')
-        document.getElementById(`new_${name}_span_${index}`).innerText = `+ Ajouter un nom`
+        document.getElementById(`new_${name}_span_${index}`).innerText = `+ Add a name`
         // console.log(`${name} - handled-2`)
     }
 }
@@ -1092,54 +1061,50 @@ function addSpouse() {
     <span class="mini_close" id="mini_close_conjoint_${nbConjoints}" onclick="handleCloseElm('conjoint',${nbConjoints})"></span>
     <div>
         <div class="mini_header">
-            <span for="checkbox-mother" class="sub_title">Conjoint</span>
+            <span for="checkbox-mother" class="sub_title">Spouse</span>
             
         </div>
         <div class="form_radio_container">
-            <div class="radio_group_title">Sexe : </div>
+            <div class="radio_group_title">Gender : </div>
             <label class="radio_item_container">                        
                 <input type="radio" value="m" checked="checked" name="radio-sexe-conjoint-${nbConjoints}">
                 <span class="checkmark"></span>
-                <span>Homme</span>
+                <span>Male</span>
             </label>
             <label class="radio_item_container">                        
                 <input type="radio" value="f" name="radio-sexe-conjoint-${nbConjoints}">
                 <span class="checkmark"></span>
-                <span>Femme</span>
+                <span>Female</span>
             </label>
         </div>
         <div class="form_radio_container">
-            <div class="radio_group_title">Statut : </div>
+            <div class="radio_group_title">Status : </div>
             <label class="radio_item_container">                        
                 <input type="radio" value="vie" checked="checked" name="radio-statut-conjoint-${nbConjoints}">
                 <span class="checkmark"></span>
-                <span>En vie</span>
+                <span>Alive</span>
             </label>
             <label class="radio_item_container">                        
                 <input type="radio" value="mort" name="radio-statut-conjoint-${nbConjoints}">
                 <span class="checkmark"></span>
-                <span>Mort(e)</span>
+                <span>Dead</span>
             </label>
-        </div>
-        <!-- 
-        <i class="indication-note"><small>(Sélectionnez son nom dans la liste déroulante OU cliquez sur "Ajouter un nom" si son nom n'est pas dans la liste)</small></i>                        
-        -->
+        </div>        
         <div class="form_input_container">
             <select id="conjoint_select_${nbConjoints}">
-                <option value="0">Guemthueng Marie</option>
-                <option value="1">KENMEUGNE Chantal</option>                                
+                <option value="0"></option>                               
             </select>
-            <input type="hidden" name="new_conjoint_input_${nbConjoints}" id="new_conjoint_input_${nbConjoints}" placeholder="Nom du conjoint ...">                            
+            <input type="hidden" name="new_conjoint_input_${nbConjoints}" id="new_conjoint_input_${nbConjoints}" placeholder="Spouse's name ...">                            
             <!-- 
             <label class="new_income_category" for="new_conjoint_check_${nbConjoints}">
                 <input type="checkbox" name="" id="new_conjoint_check_${nbConjoints}" onchange="handleNewCheck(this, 'conjoint', ${nbConjoints})">
-                <span id="new_conjoint_span_${nbConjoints}">+ Ajouter un nom</span>            
+                <span id="new_conjoint_span_${nbConjoints}">+ Add a name</span>            
             </label>
             -->
         </div>
         <!--
         <div class="form_input_container">
-            <input type="number" name="conjoint_rank_${nbConjoints}" id="conjoint_rank_${nbConjoints}" placeholder="Rang du conjoint ...">                            
+            <input type="number" name="conjoint_rank_${nbConjoints}" id="conjoint_rank_${nbConjoints}" placeholder="Spouse rank ...">                            
         </div> 
         -->                
     </div>

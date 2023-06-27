@@ -10,8 +10,8 @@
 {% block content %}
 <div class="super_container_wh">
     <div class="back_button_container">
-        <a class="back_button" href="{% url 'updateItem' myID %}">Modifier</a>
-        <a class="back_button" href="/family_list">Retour vers la liste</a>
+        <a class="back_button" href="{% url 'updateItem' myID %}">Edit</a>
+        <a class="back_button" href="/family_list">Back to family list</a>
     </div>
     <div class="form_container_wh mb-5">
         <span class="photo_container_wh">
@@ -26,26 +26,26 @@
             {% csrf_token %}
             <div class="form_section">
                 <div class="form_section_title">
-                    <span class="">Moi</span>
+                    <span class="">Me</span>
                 </div>
                 <div class="form_radio_container">
                     <!-- <div class="radio_group_title">Photo : </div> -->
                     
                 </div>
                 <div class="form_radio_container">
-                    <div class="radio_group_title">Nom : </div>
+                    <div class="radio_group_title">Name : </div>
                     <span>{{myName}}</span>
                 </div> 
                 <div class="form_radio_container">
-                    <div class="radio_group_title">Sexe : </div>
+                    <div class="radio_group_title">Gender : </div>
                     <span>{{myGender}}</span>
                 </div>                
                 <div class="form_radio_container">
-                    <div class="radio_group_title">Statut : </div>
+                    <div class="radio_group_title">Status : </div>
                     <span>{{myLifeStatus}}</span>
                 </div>
                 <div class="form_radio_container">
-                    <div class="radio_group_title">Date et lieu de naissance : </div>
+                    <div class="radio_group_title">Date and place of birth : </div>
                     {% if birthdate != '' and birthplace != '' %}
                     <span>{{birthdate}}&nbsp;à&nbsp;{{birthplace}}</span>
                     {% else %}
@@ -53,7 +53,7 @@
                     {% endif %}
                 </div>
                 <div class="form_radio_container">
-                    <div class="radio_group_title">Rang de naissance : </div>
+                    <div class="radio_group_title">Birth rank : </div>
                     <span>{{birthrank}}</span>
                 </div>                
                 <div class="form_radio_container">
@@ -61,19 +61,19 @@
                     <span>{{email}}</span>
                 </div>
                 <div class="form_radio_container">
-                    <div class="radio_group_title">Telephone : </div>
+                    <div class="radio_group_title">Phone : </div>
                     <span>{{telephone}}</span>
                 </div>
                 <div class="form_radio_container">
-                    <div class="radio_group_title">Profession : </div>
+                    <div class="radio_group_title">Occupation : </div>
                     <span>{{profession}}</span>
                 </div>
                 <div class="form_radio_container">
-                    <div class="radio_group_title">Pays : </div>
+                    <div class="radio_group_title">Country : </div>
                     <span>{{country}}</span>
                 </div>
                 <div class="form_radio_container">
-                    <div class="radio_group_title">Ville : </div>
+                    <div class="radio_group_title">City : </div>
                     <span>{{city}}</span>
                 </div>
                 <div class="form_radio_container">
@@ -93,7 +93,7 @@
                     <a href="{{instagram}}">{{instagram}}</a>
                 </div>
                 <div class="form_radio_container">
-                    <div class="radio_group_title">A propos de moi : </div>
+                    <div class="radio_group_title">About me : </div>
                     <span>{{aboutme}}</span>
                 </div>
             </div>
@@ -101,23 +101,23 @@
 
             <div class="form_section">
                 <div class="form_section_title">
-                    <span class="">Mes parents</span>                    
+                    <span class="">My parents</span>                    
                 </div>
                 {% if father.id == None and mother.id == None %}
-                <span>Aucun</span>
+                <span>None</span>
                 {% else %}
                 <div class="composed-checkbox-container">                    
                     <div>
-                        <label for="checkbox-mother" class="sub_title">Ma maman</label>
+                        <label for="checkbox-mother" class="sub_title">My mother</label>
                         {% if mother.id == None %}
-                        <span>Aucune</span>
+                        <span>None</span>
                         {% else %}
                         <div class="form_radio_container">
-                            <div class="radio_group_title">Nom : </div>
+                            <div class="radio_group_title">Name : </div>
                             <span>{{mother.name}}</span>
                         </div>              
                         <div class="form_radio_container">
-                            <div class="radio_group_title">Statut : </div>
+                            <div class="radio_group_title">Status : </div>
                             <span>{{mother.status}}</span>
                         </div>   
                         {% endif %}
@@ -126,16 +126,16 @@
                 </div>
                 <div class="composed-checkbox-container">                    
                     <div>
-                        <label for="checkbox-mother" class="sub_title">Mon papa</label>
+                        <label for="checkbox-mother" class="sub_title">My father</label>
                         {% if father.id == None %}
-                        <span>Aucun</span>
+                        <span>None</span>
                         {% else %}
                         <div class="form_radio_container">
-                            <div class="radio_group_title">Nom : </div>
+                            <div class="radio_group_title">Name : </div>
                             <span>{{father.name}}</span>
                         </div>              
                         <div class="form_radio_container">
-                            <div class="radio_group_title">Statut : </div>
+                            <div class="radio_group_title">Status : </div>
                             <span>{{father.status}}</span>
                         </div>   
                         {% endif %}
@@ -148,24 +148,24 @@
 
             <div class="form_section">
                 <div class="form_section_title">
-                    <span class="">Mon/Mes conjoint(s)</span>
+                    <span class="">Spouse(s)</span>
                 </div>
                 <div class="all_conjoints" id="all_conjoints"></div>
                 {% if len_spouses > 0 %}
                     {% for item in spouses %}
                     <div class="composed-checkbox-container">                    
                         <div>
-                            <label for="checkbox-mother" class="sub_title">Conjoint</label>                            
+                            <label for="checkbox-mother" class="sub_title">Spouse</label>                            
                             <div class="form_radio_container">
-                                <div class="radio_group_title">Nom : </div>
+                                <div class="radio_group_title">Name : </div>
                                 <span>{{item.name}}</span>
                             </div>
                             <div class="form_radio_container">
-                                <div class="radio_group_title">Sexe : </div>
+                                <div class="radio_group_title">Gender : </div>
                                 <span>{{item.gender}}</span>
                             </div>               
                             <div class="form_radio_container">
-                                <div class="radio_group_title">Statut : </div>
+                                <div class="radio_group_title">Status : </div>
                                 <span>{{item.status}}</span>
                             </div>                                                 
                         </div>

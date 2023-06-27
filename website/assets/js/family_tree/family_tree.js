@@ -123,17 +123,17 @@ function createBallSvgInnerText(id, myname, myphoto=null, isIncomingSpouse, x, y
     if (isIncomingSpouse) {
         div1.innerHTML = `
         <ul>
-            <li><a href="show_item/${id}">Voir</a></li>
-            <li><a href="update_item/${id}">Modifier</a></li>
+            <li><a href="show_item/${id}">Show</a></li>
+            <li><a href="update_item/${id}">Edit</a></li>
         </ul>
         `;
     } else {
         div1.innerHTML = `
         <ul>
-            <li><a href="show_item/${id}">Voir</a></li>
-            <li><a href="update_item/${id}">Modifier</a></li>
-            <li><a href="new_spouse/${id}">Ajouter un conjoint</a></li>
-            <li><a href="new_child/${id}">Ajouter un enfant</a></li>
+            <li><a href="show_item/${id}">Show</a></li>
+            <li><a href="update_item/${id}">Edit</a></li>
+            <li><a href="new_spouse/${id}">+ Add a spouse</a></li>
+            <li><a href="new_child/${id}">+ Add a child</a></li>
         </ul>
         `;
     }

@@ -12,21 +12,21 @@
 <br>
 <h1>Family List</h1>
 <div class="btn_container mt-4">
-    <a href="/new_fm" id="ajoutConjointBtn" class="outline_btn_primary_wh">+ Ajouter un membre</a>
+    <a href="/new_fm" id="ajoutConjointBtn" class="outline_btn_primary_wh">+ Add family member</a>
 </div>
 <div class="btn_container mt-4" style="display:block;" >
-    <a href="/delete_all_items" id="delete_fm_btn" class="btn btn-danger">* Supprimer tout *</a>
+    <a href="/delete_all_items" id="delete_fm_btn" class="btn btn-danger">* Delete all family members *</a>
 </div>
 <br>
 <table class="table-striped table-bordered">
     <thead>
         <th>Id</th>
-        <th>Nom</th>
-        <th>Sexe</th>
-        <th>En vie</th>
-        <th>Pere </th>        
-        <th>Mere</th>        
-        <th>Conjoint(s)</th> 
+        <th>Name</th>
+        <th>Gender</th>
+        <th>Alive</th>
+        <th>Father</th>        
+        <th>Mother</th>        
+        <th>Spouse(s)</th> 
         <th>Generation</th>
         <th></th>  
     </thead>
@@ -64,11 +64,11 @@
 <div id="modal_container" class="modal_container displayNone">
     <div class="modal_content">
         <div>
-            Etes-vous sûr de vouloir supprimer <strong id="fmName">Mon nom</strong> de la famille ?
+            Are you sur you want to delete <strong id="fmName">My name</strong> from this family ?
         </div>
         <div class="btn_container mt-4">
-            <a href="#" id="delete_fm_btn" class="btn btn-danger mr-2">Oui</a>
-            <a href="#" onclick="closeDeleteModal(event)" id="modal_closer_btn" class="btn btn-light">Non, je ne veux pas</a>
+            <a href="#" id="delete_fm_btn" class="btn btn-danger mr-2">Yes</a>
+            <a href="#" onclick="closeDeleteModal(event)" id="modal_closer_btn" class="btn btn-light">No, I don't</a>
         </div>
     </div>
 </div>

@@ -11,46 +11,46 @@
 {% block content %}
 <div class="super_container_wh">
     <div class="back_button_container">
-        <a class="back_button" href="/family_list">Retour vers la liste</a>
+        <a class="back_button" href="/family_list">Back to family list</a>
     </div>
     <div class="form_container_wh mb-5">
-        <h2 id="form_title">Nouveau membre de famille</h2>
+        <h2 id="form_title">New family member</h2>
         <form class="mb-5" action="" method="POST">
             {% csrf_token %}
             <div class="form_section">
                 <div class="form_section_title">
-                    <span class="">Moi</span>
+                    <span class="">Me</span>
                 </div>
 
                 <div class="form_radio_container">
-                    <div class="radio_group_title">Sexe : </div>
+                    <div class="radio_group_title">Gender : </div>
                     <label class="radio_item_container">                        
                         <input type="radio" value="m" checked="checked" name="radio_gender_moi">
                         <span class="checkmark"></span>
-                        <span>Homme</span>
+                        <span>Male</span>
                     </label>
                     <label class="radio_item_container">                        
                         <input type="radio" value="f" name="radio_gender_moi">
                         <span class="checkmark"></span>
-                        <span>Femme</span>
+                        <span>Female</span>
                     </label>
                 </div>                
                 <div class="form_radio_container">
-                    <div class="radio_group_title">Statut : </div>
+                    <div class="radio_group_title">Status : </div>
                     <label class="radio_item_container">                        
                         <input type="radio" value="vie" checked="checked" name="radio_status_moi">
                         <span class="checkmark"></span>
-                        <span>En vie</span>
+                        <span>Alive</span>
                     </label>
                     <label class="radio_item_container">                        
                         <input type="radio" value="mort" name="radio_status_moi">
                         <span class="checkmark"></span>
-                        <span>Mort(e)</span>
+                        <span>Dead</span>
                     </label>
                     <label class="radio_item_container">                        
                         <input type="radio" value="mba"name="radio_status_moi">
                         <span class="checkmark"></span>
-                        <span>Mort(e) à bas âge</span>
+                        <span>Died at a young age</span>
                     </label>
                 </div>
                 <div class="form_input_container">
@@ -61,11 +61,11 @@
                 <form class="converter-box" id="convertFormId">
                     <div class="upload-top" style="display: flex; align-items: center; gap: 150px; margin-bottom: 10px; margin-top: 10px;">
                         <!-- <p>Photo : </p> -->
-                        <div class="radio_group_title">Photo : </div>
+                        <div class="radio_group_title">Picture : </div>
                         <label class="checkbox_item_container">
                             <input type="checkbox" id="noPhotoCheck">
                             <span class="checkbox_checkmark"></span>
-                            <span style="font-size: 14px;">Pas de photo</span>
+                            <span style="font-size: 14px;">No picture</span>
                         </label>
                     </div>
     
@@ -77,7 +77,7 @@
                         <div class="drag">
                             <!-- <p>Cliquez pour insérer une photo</p> -->
                             <!-- <p>Or</p> -->
-                            <a href="#">Cliquez ici pour insérer une photo</a>
+                            <a href="#">Click here to insert a picture</a>
                         </div>
                         <div id="dropzone" class="dropzone"></div>
                         
@@ -93,11 +93,11 @@
 
             <div class="form_section" id="parents_form_section">
                 <div class="form_section_title">
-                    <span class="">Mes parents</span>
+                    <span class="">My parents</span>
                     <label class="checkbox_item_container">
                         <input type="checkbox" id="noParentCheck"checked="checked">
                         <span class="checkbox_checkmark"></span>
-                        <span>Aucun</span>
+                        <span>None</span>
                     </label>
                 </div> 
                 <div class="composed-checkbox-container">
@@ -106,19 +106,19 @@
                         <span class="checkbox_checkmark pt-2"></span>
                     </label>
                     <div>
-                        <label for="checkbox-mother" class="sub_title">Ma maman</label>
+                        <label for="checkbox-mother" class="sub_title">My mother</label>
                         <input type="hidden" value="f" checked="checked" name="radio_sexe_mother">
                         <div class="form_radio_container">
-                            <div class="radio_group_title">Statut : </div>
+                            <div class="radio_group_title">Status : </div>
                             <label class="radio_item_container">                        
                                 <input type="radio" value="vie" checked="checked" name="radio_status_mother">
                                 <span class="checkmark"></span>
-                                <span>En vie</span>
+                                <span>Alive</span>
                             </label>
                             <label class="radio_item_container">                        
                                 <input type="radio" value="mort"  name="radio_status_mother">
                                 <span class="checkmark"></span>
-                                <span>Morte</span>
+                                <span>Dead</span>
                             </label>
                         </div>
                         
@@ -129,7 +129,7 @@
                                 <option value="1">KENMEUGNE Chantal</option>                                
                                -->
                             </select>
-                            <input type="hidden" name="my_name" id="new_parent_female_input" placeholder="Nom de ma maman ...">                            
+                            <input type="hidden" name="my_name" id="new_parent_female_input" placeholder="Mother's name ...">                            
                             <!-- <label class="new_income_category" for="new_parent_female_check">
                                 <input type="checkbox" name="" id="new_parent_female_check">
                                 <span id="new_parent_female_span">+ Ajouter un nom</span>            
@@ -144,19 +144,19 @@
                         <span class="checkbox_checkmark pt-2"></span>
                     </label>
                     <div>
-                        <label for="checkbox-father" class="sub_title">Mon papa</label>
+                        <label for="checkbox-father" class="sub_title">My father</label>
                         <input type="hidden" value="m" checked="checked" name="radio_sexe_father">
                         <div class="form_radio_container">
-                            <div class="radio_group_title">Statut : </div>
+                            <div class="radio_group_title">Status : </div>
                             <label class="radio_item_container">                        
                                 <input type="radio" value="vie" checked="checked" name="radio_status_father">
                                 <span class="checkmark"></span>
-                                <span>En vie</span>
+                                <span>Alive</span>
                             </label>
                             <label class="radio_item_container">                        
                                 <input type="radio" value="mort" name="radio_status_father">
                                 <span class="checkmark"></span>
-                                <span>Mort</span>
+                                <span>Dead</span>
                             </label>
                         </div>
                         <!-- <i class="indication-note"><small>(Sélectionnez son nom dans la liste déroulante OU cliquez sur "Ajouter un nom" si son nom n'est pas dans la liste)</small></i>                    -->
@@ -166,7 +166,7 @@
                                 <option value="1">TADJUIDJE KAMDEM Fidele</option>                                
                                -->
                             </select>
-                            <input type="hidden" name="my_name" id="new_parent_male_input" placeholder="Nom de mon papa ...">                            
+                            <input type="hidden" name="my_name" id="new_parent_male_input" placeholder="Father's name ...">                            
                             <!-- <label class="new_income_category" for="new_parent_male_check">
                                 <input type="checkbox" name="" id="new_parent_male_check">
                                 <span id="new_parent_female_span">+ Ajouter un nom</span>            
@@ -180,7 +180,7 @@
 
             <div class="form_section">
                 <div class="form_section_title">
-                    <span class="">Mon/Mes conjoint(s)</span>
+                    <span class="">My spouse(s)</span>
                 </div> 
                 <div class="all_conjoints" id="all_conjoints">
                     <!-- <div class="composed-checkbox-container"> 
@@ -236,7 +236,7 @@
                 
 
                 <div class="btn_container">
-                    <div id="ajoutConjointBtn" class="outline_btn_primary_wh">+ Ajouter un conjoint</div>
+                    <div id="ajoutConjointBtn" class="outline_btn_primary_wh">+ Add a spouse</div>
                 </div>
             </div>
 
@@ -255,20 +255,20 @@
 
             <div class="form_section">
                 <div class="form_section_title">
-                    <span class="">Mes informations</span>
+                    <span class="">My informations</span>
                 </div> 
                 <!-- <div class="composed-checkbox-container">  -->
                     <div>
-                        <span for="checkbox-mother" class="sub_title">Date et lieu de naissance</span>
+                        <span for="checkbox-mother" class="sub_title">Date and place of birth</span>
                         <div class="form_input_container">
-                            <input type="date" name="birthdate" id="birthdate" placeholder="Date de naissance ...">
-                            <input type="text" name="birthplace" id="birthplace" placeholder="Lieu de naissance ...">                            
+                            <input type="date" name="birthdate" id="birthdate" placeholder="birthdate ...">
+                            <input type="text" name="birthplace" id="birthplace" placeholder="Birthplace ...">                            
                         </div>                        
                     </div>
                     <div>
-                        <span for="checkbox-mother" class="sub_title">Rang de naissance</span>
+                        <span for="checkbox-mother" class="sub_title">Birth rank</span>
                         <div class="form_input_container">
-                            <input type="number" name="birthrank" id="birthrank" placeholder="Rang de naissance ...">                            
+                            <input type="number" name="birthrank" id="birthrank" placeholder="Birth rank ...">                            
                         </div>                        
                     </div>
                     <div>
@@ -278,29 +278,29 @@
                         </div>                        
                     </div>
                     <div>
-                        <span for="checkbox-mother" class="sub_title">Téléphone</span>
-                        <i>(Numéro Whatsapp de préférence)</i>
+                        <span for="checkbox-mother" class="sub_title">Phone</span>
+                        <i>(Input Whatsapp number by default)</i>
                         <div class="form_input_container">
-                            <input type="text" name="telephone" id="telephone" placeholder="Téléphone ...">                            
+                            <input type="text" name="telephone" id="telephone" placeholder="Phone ...">                            
                         </div>                        
                     </div>
                     <div>
-                        <span for="checkbox-mother" class="sub_title">Profession</span>
+                        <span for="checkbox-mother" class="sub_title">Occupation</span>
                         <div class="form_input_container">
-                            <input type="text" name="profession" id="profession" placeholder="Profession ...">                            
+                            <input type="text" name="profession" id="profession" placeholder="Occupation ...">                            
                         </div>                        
                     </div> 
                     <div>
-                        <span for="checkbox-mother" class="sub_title">Pays et ville de résidence</span>
+                        <span for="checkbox-mother" class="sub_title">Country and city of residence</span>
                         <!-- <i class="indication-note"><small>(Pays, Ville, Arrondissement)</small></i> -->
                         <div class="form_input_container">
-                            <input type="text" name="country" id="country" placeholder="Pays ...">                            
-                            <input type="text" name="city" id="city" placeholder="Ville ..."> 
+                            <input type="text" name="country" id="country" placeholder="Country ...">                            
+                            <input type="text" name="city" id="city" placeholder="City ..."> 
                         </div>                        
                     </div>
                                        
                     <div>
-                        <span for="checkbox-mother" class="sub_title">Liens</span>
+                        <span for="checkbox-mother" class="sub_title">Social links</span>
                         <div class="form_input_container">
                             <input type="text" name="linkedin" id="linkedin" placeholder="Linkedin ...">
                             <input type="text" name="twitter" id="twitter" placeholder="Twitter ...">                             
@@ -311,9 +311,9 @@
                         </div>                      
                     </div>
                     <div>
-                        <span for="checkbox-mother" class="sub_title">A propos de moi</span>
+                        <span for="checkbox-mother" class="sub_title">About me</span>
                         <div class="form_input_container">
-                            <textarea name="" id="aboutme" cols="30" rows="10" placeholder="A propos de moi ..."></textarea>
+                            <textarea name="" id="aboutme" cols="30" rows="10" placeholder="About me ..."></textarea>
                             <!-- <input type="text" name="my_name" id="new_parent_female_input" placeholder="Email ...">                             -->
                         </div>                        
                     </div>
@@ -322,7 +322,7 @@
 
 
 
-            <button class="btn btn-primary" type="submit" id="create_fm_btn">Créer un nouveau membre</button> 
+            <button class="btn btn-primary" type="submit" id="create_fm_btn">Save</button> 
         </form>
     </div>
 </div>
